@@ -2,18 +2,19 @@
 from tinydb import TinyDB, Query
 from ToVehicle import *
 
+
 # https://tinydb.readthedocs.io/en/latest/getting-started.html
 # https://github.com/msiemens/tinydb/
 
 # Grab the file 
 db = TinyDB('db.json')
+TinyDB.default_table_name = 'table'
 
 stage_name = "Stage "
 stage_counter = 0
 stage = stage_name + str(stage_counter)
 altitude_update = 9
-
-
+altitude_value = 2
 
 # JSON array is created
 data = {'Altitude': altitude_update , 'Battery': 1}
@@ -23,17 +24,24 @@ data = {'Altitude': altitude_update , 'Battery': 1}
 #  'Sensors OK': boolean, 'Speed': float, 'Stage Completed': boolean, 'Status': int, 'Yaw': float, 
 #  'Time_since_last packet': int, 'Last_packet_time': int}}
 
-example = ToVehicle.data()
+example = ToVehicle.data1()
 
-for ex in example:
-    db.insert(ex)
 
+table = db.table('vehicle_1')
+
+table1 = db.table('vehicle_2')
+
+table.insert(data)
+table1.insert(example)
+
+#for ex in example:
+#    db.insert(ex)
 
 # Added into the database
 #db.insert(example)
 
 query = Query()
-print(db.search(query.Altitude == 9))
+print(table1.search(query.Altitude == 0.0))
 #print(db.all())
 
 # Manually adds a json array 
@@ -45,4 +53,5 @@ print(db.search(query.Altitude == 9))
 #db.truncate()
 
 
-print(db.all())
+#el = db.get(query.Altitude == 0)
+#print(doc_id)
