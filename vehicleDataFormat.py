@@ -1,5 +1,36 @@
-class ToVehicle():
-    def data():
+# the format for the packet inputs (standard)
+class vehicleDataFormat():
+    
+    # 'finalized' jsonFormat
+    def dataFormat():
+        jsonFormat = {
+            'Altitude': 0.0,
+            'Altitude Color': None,
+            'Battery': 0.0,
+            'Battery Color': None,
+            'Current Stage': 0,
+            'Geofence Compliant': False,
+            'Geofence Compliant Color': None,
+            'Latitude': 0.0,
+            'Longitude': 0.0,
+            'Pitch': 0.0,
+            'Pitch Color': None,
+            'Propulsion': False,
+            'Propulsion Color': None,
+            'Roll': 0.0,
+            'Roll Color': None,
+            'Sensors ok': False,
+            'Speed': 0.0,
+            'Stage Completed': False,
+            'Status': 0,
+            'Yaw': 0.0,
+            'time_since_last_packet': 0,
+            'last_packet_time': 0
+        }
+        return jsonFormat
+
+    # alternative format
+    def data1():
         jsonFormat = [{
             {
                 'title': 'Altitude',
@@ -68,29 +99,4 @@ class ToVehicle():
             
         }]
         return jsonFormat
-    def data1():
-        json = {
-            'Altitude': 0.0,
-            'Atitude Color': None,
-            'Battery': 0.0,
-            'Battery Color': None,
-            'Current Stage': 0,
-            'Geofence Compliant': False,
-            'Geofence Compliant Color': None,
-            'Latitude': 0.0,
-            'Longitude': 0.0,
-            'Pitch': 0.0,
-            'Pitch Color': None,
-            'Propulsion': False,
-            'Propulsion Color': None,
-            'Roll': 0.0,
-            'Roll Color': None,
-            'Sensors ok': False,
-            'Speed': 0.0,
-            'Stage Completed': False,
-            'Status': 0,
-            'Yaw': 0.0,
-            'time_since_last_packet': 0,
-            'last_packet_time': 0
-        }
-        return json
+    
