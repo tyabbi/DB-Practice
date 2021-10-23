@@ -10,9 +10,6 @@ from ToVehicle import *
 db = TinyDB('db.json')
 TinyDB.default_table_name = 'table'
 
-stage_name = "Stage "
-stage_counter = 0
-stage = stage_name + str(stage_counter)
 altitude_update = 9
 altitude_value = 2
 
@@ -31,8 +28,8 @@ table = db.table('vehicle_1')
 
 table1 = db.table('vehicle_2')
 
-table.insert(data)
-table1.insert(example)
+#table.insert(data)
+#table1.insert(example)
 
 #for ex in example:
 #    db.insert(ex)
@@ -41,9 +38,10 @@ table1.insert(example)
 #db.insert(example)
 
 query = Query()
-print(table1.search(query.Altitude == 0.0))
+#print(table1.search(query.Altitude == 0.0))
 #print(db.all())
 
+print(table1.all())
 # Manually adds a json array 
 #db.insert({'int': 1, 'char': 'b'})
 
