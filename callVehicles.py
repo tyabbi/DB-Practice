@@ -10,11 +10,16 @@ mac = vehicleDataFormat.dataFormat()
 #print(updateVehicle.get_altitude(mac))
 #print(mac['Altitude'])]
 
+vehicleEntry = vehicleDataFormat.dataFormat()
+print(vehicleEntry['Altitude'])
+vehicleEntry['Altitude'] = altitude
+print(vehicleEntry['Altitude'])
+
 class callVehicles(): 
     #vehicleEntry = vehicleDataFormat.dataFormat()
     def set_altitude(altitude):    
         vehicleEntry = vehicleDataFormat.dataFormat()
         vehicleEntry['Altitude'] = altitude
 
-callVehicles.set_altitude(mac, 3.0)
-print(mac['Altitude'])
+#callVehicles.set_altitude(mac, 3.0)
+#print(mac['Altitude'])
