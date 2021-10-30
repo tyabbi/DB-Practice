@@ -1,25 +1,25 @@
 # Calling the vehicle.py for each vehicle 
 
-from updateVehicle import *
+
 from vehicleDataFormat import *
 
-altitude = 3.0
+altitude = 8.0
 
 mac = vehicleDataFormat.dataFormat()
-#updateVehicle.set_altitude(mac, 0.0)
-#print(updateVehicle.get_altitude(mac))
-#print(mac['Altitude'])]
+class callVehicles():
+#vehicleEntry = vehicleDataFormat.dataFormat()
+#print(vehicleEntry['Altitude'])
+#vehicleEntry['Altitude'] = altitude
+#print(vehicleEntry['Altitude'])
 
-vehicleEntry = vehicleDataFormat.dataFormat()
-print(vehicleEntry['Altitude'])
-vehicleEntry['Altitude'] = altitude
-print(vehicleEntry['Altitude'])
+#print(vehicleDataFormat.get_altitude(mac))
+#vehicleDataFormat.set_altitude(mac, altitude)
+#print(vehicleDataFormat.get_altitude(mac))
 
-class callVehicles(): 
-    #vehicleEntry = vehicleDataFormat.dataFormat()
-    def set_altitude(altitude):    
-        vehicleEntry = vehicleDataFormat.dataFormat()
-        vehicleEntry['Altitude'] = altitude
+#print(mac)
 
-#callVehicles.set_altitude(mac, 3.0)
-#print(mac['Altitude'])
+    def macVehicle():
+        vehicleDataFormat.set_altitude(mac, altitude)
+        #print(mac)
+
+        return mac 

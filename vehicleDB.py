@@ -2,7 +2,9 @@
 
 # Import the TinyDB, vehicleDataFormat, json libraries 
 from tinydb import TinyDB, Query
+#from callVehicles import macVehicle
 from vehicleDataFormat import *
+from callVehicles import *
 import json
 
 # TinyDB documentation/help links:
@@ -26,24 +28,24 @@ data = {'Altitude': altitude_update , 'Battery': 1}
 uavEntry = vehicleDataFormat.dataFormat()
 ugvEntry = vehicleDataFormat.dataFormat()
 
-print(ugvEntry['Altitude'])
-
+#print(ugvEntry['Altitude'])
+macVehicle1 = callVehicles.macVehicle()
 # Define the name of each document (each vehicle)
 uav_table = db.table('UAV_Entries')
 ugv_table = db.table('UGV_Entries')
 
 # How to add data to each document
-#uav_table.insert(uavEntry)
+uav_table.insert(macVehicle1)
 #ugv_table.insert(ugvEntry)
 
 # Call the query class
 query = Query()
 
 # How to make a query for an attribute
-uavValues = uav_table.search(query.Altitude == 0.0)
-
+uavValues = uav_table.search(query.Altitude == 8.0)
+#print(uavValues)
 # Convert list to JSON string and print (formatting choice)
-#print(json.dumps(uavValues, indent = 2))
+print(json.dumps(uavValues, indent = 2))
 
 # Print out the list (different format choice)
 #for x in range(len(values)):
