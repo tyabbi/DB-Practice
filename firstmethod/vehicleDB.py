@@ -33,6 +33,7 @@ ugvEntry = vehicleDataFormat.dataFormat()
 
 #print(ugvEntry['Altitude'])
 macVehicle1 = callVehicles.macVehicle()
+print(macVehicle1)
 # Define the name of each document (each vehicle)
 uav_table = db.table('UAV_Entries')
 ugv_table = db.table('UGV_Entries')
@@ -48,7 +49,7 @@ vehicle = db.table('vehicle')
 query = Query()
 
 # How to make a query for an attribute
-print(json.dumps(vehicle.all(), indent = 2))
+#print(json.dumps(vehicle.all(), indent = 2))
 uavValues = uav_table.search(query.Altitude == 8.0)
 #print(uavValues)
 # Convert list to JSON string and print (formatting choice)
