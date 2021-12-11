@@ -2,16 +2,20 @@ import sqlite3
 from sqlite3 import Error
 from callVehic import *
 import pandas as pd 
+import json
 
 # vehicleDatabase.py handles storing vehicle data into a database
 
 #if __name__ == '__main__':
 
+connection = None
+db_file = "database.db"
+
 class vehicleDatabase():
+    
 
     def saveData(macVehicle):
-        connection = None
-        db_file = "database.db"
+        
 
         try: 
             # Establish connection with SQLite database "database.db"
@@ -86,3 +90,30 @@ class vehicleDatabase():
 
         except Error as e: 
             print(e)
+
+    def query_db(query, args=(), one=False):
+        # https://stackoverflow.com/questions/3286525/return-sql-table-as-json-in-python
+
+        # Establish connection with SQLite database "database.db"
+        connection = sqlite3.connect(db_file, isolation_level=None,
+                            detect_types=sqlite3.PARSE_COLNAMES)            
+        # Enables SQLite commands
+        cursor = connection.cursor()
+        cursor.execute(query, args)
+        
+        r = [dict((cursor.description[i][0], value) \
+                for i, value in enumerate(row)) for row in cursor.fetchall()]
+        connection.close()
+        return (r[0] if r else None) if one else r
+
+    def getData(vehicleName):
+            
+        try:
+
+            execution_line = "SELECT * FROM " + str(vehicleName) + " ORDER BY rowid DESC LIMIT 1"
+            jsonQuery = vehicleDatabase.query_db(execution_line)
+            return jsonQuery
+
+        except Error as e:
+            print(e)
+

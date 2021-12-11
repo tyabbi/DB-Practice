@@ -65,6 +65,8 @@ class vehicleDataFormat():
 #    def get_jsonFormat(self):
 #       return self.jsonFormat
 
+    # Setters and Getters  
+    
     def set_altitude(self, altitude):
         if(type(altitude) == float):           
             self.update({"altitude": altitude})
