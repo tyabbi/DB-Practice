@@ -1,8 +1,9 @@
 # the format for the packet inputs (standard)
 class vehicleDataFormat():
     
+    # Used for setter and getter methods
     def __init__(self):
-        self.jsonFormat = {
+        self.vehicleFormat = {
             'altitude': 0.0,
             'altitude_color': 'None',
             'battery': 0.0,
@@ -26,9 +27,10 @@ class vehicleDataFormat():
             'time_since_last_packet': 0,
             'last_packet_time': 0
         }
-    # 'finalized' jsonFormat
+
+
     def dataFormat():
-        jsonFormat = {
+        vehicleFormat = {
             'altitude': 0.0,
             'altitude_color': 'None',
             'battery': 0.0,
@@ -52,7 +54,7 @@ class vehicleDataFormat():
             'time_since_last_packet': 0,
             'last_packet_time': 0
         }
-        return jsonFormat
+        return vehicleFormat
 
 # GENERAL GET METHOD
 #    def get_value(self, key):

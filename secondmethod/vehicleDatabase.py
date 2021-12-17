@@ -8,22 +8,22 @@ import json
 
 #if __name__ == '__main__':
 
+# Values to create connection to SQLite Database
 connection = None
-db_file = "database.db"
+dbFile = "database.db"
 
 class vehicleDatabase():
-    
 
-    def saveData(macVehicle):
-        
-
+    # Method to save new vehicle dictionary entry to SQLite Database
+    def saveData(requestedVehicle):        
         try: 
             # Establish connection with SQLite database "database.db"
-            connection = sqlite3.connect(db_file, isolation_level=None,
-                            detect_types=sqlite3.PARSE_COLNAMES)
+            connection = sqlite3.connect(dbFile, isolation_level=None, detect_types=sqlite3.PARSE_COLNAMES)
             
             # Enables SQLite commands
             cursor = connection.cursor()
+
+            # TODO: Need to rewrite sql commands with requested vehicle name (hardcoded to testing right now)
 
             # TEST: Tests creating a table
             testing = """ CREATE TABLE IF NOT EXISTS testing(altitude FLOAT, altitude_color TEXT, battery FLOAT, battery_color TEXT)"""
@@ -56,10 +56,8 @@ class vehicleDatabase():
             # Creates the table
             cursor.execute(testing)
 
-            #macVehicle = callVehicles.macVehicle()
-            #print(macVehicle)
-            # TEST: Tests adding values to a JSON array
-            json1 = {'altitude': 1.0, 'altitude_color': 'Red', 'battery': 70.0, 'battery_color': 'Blue' }
+            # Enters the values into the requested vehicle database
+            cursor.execute('INSERT INTO testing(altitude, battery) VALUES(:altitude, :battery)', requestedVehicle)
 
             # cursor.execute('''INSERT INTO vehicle(altitude, altitude_color, battery, battery_color, current_stage, geofence_compliant,
             #                                    geofence_compliant_color, latitude, longitude, pitch, pitch_color, propulsion, 
@@ -69,51 +67,45 @@ class vehicleDatabase():
             #                                    :longitude, :pitch, :pitch_color, :propulsion, :propulsion_color, :roll, :roll_color, :sensors_ok,
             #                                    :speed, :stage_completed, :status, :yaw, :time_since_last_packet, :last_packet_time)''', macVehicle)
 
-            # TEST: Tests accepting packets under certain conditions
+            # TEST: Accepting packets under certain conditions
             #if (json1['altitude'] == 1.0):
             #    cursor.execute('INSERT INTO testing(altitude, altitude_color, battery, battery_color) VALUES(:altitude, :altitude_color, :battery, :battery_color)', json1)
-            cursor.execute('INSERT INTO testing(altitude, battery) VALUES(:altitude, :battery)', macVehicle)
+            
 
             # Export the database onto an CSV file
-            #db_file = pd.read_sql_query("SELECT * FROM testing", connection)
-            #db_file.to_csv('vehicle_database.csv', index = False)
-
-            #cursor.execute("SELECT * FROM project WHERE begin_date = '11-05-2021'")
-            #results = cursor.fetchall()
-            #print(results)
-
-            #cursor.execute("SELECT * FROM testing ")
-            #results = cursor.fetchall()
-            #print(results)
+            db_file = pd.read_sql_query("SELECT * FROM testing", connection)
+            db_file.to_csv('text_database.csv', index = False)
 
             connection.commit()
+            #connection.close()
 
         except Error as e: 
             print(e)
 
-    def query_db(query, args=(), one=False):
-        # https://stackoverflow.com/questions/3286525/return-sql-table-as-json-in-python
-
-        # Establish connection with SQLite database "database.db"
-        connection = sqlite3.connect(db_file, isolation_level=None,
-                            detect_types=sqlite3.PARSE_COLNAMES)            
-        # Enables SQLite commands
-        cursor = connection.cursor()
-        cursor.execute(query, args)
-        
-        r = [dict((cursor.description[i][0], value) \
-                for i, value in enumerate(row)) for row in cursor.fetchall()]
-        connection.close()
-        return (r[0] if r else None) if one else r
-
     def getData(vehicleName):
-            
+        # https://stackoverflow.com/questions/3286525/return-sql-table-as-json-in-python
         try:
+            # Establish connection with SQLite database "database.db"
+            connection = sqlite3.connect(dbFile, isolation_level=None, detect_types=sqlite3.PARSE_COLNAMES) 
 
+            # Enables SQLite commands
+            cursor = connection.cursor()
+
+            # Select from the requested vehicle database and get the last entry
             execution_line = "SELECT * FROM " + str(vehicleName) + " ORDER BY rowid DESC LIMIT 1"
-            jsonQuery = vehicleDatabase.query_db(execution_line)
-            return jsonQuery
+            cursor.execute(execution_line)
+            
+            # TODO: try to create dictonary instead of list[dictonary]
+            # Create a dictonary for the last entry
+            lastEntry = [dict((cursor.description[i][0], value) \
+                for i, value in enumerate(row)) for row in cursor.fetchall()]
 
+            connection.close()
+
+            return lastEntry
+
+            #one = False
+            #return (lastEntry[0] if lastEntry else None) if one else lastEntry
         except Error as e:
             print(e)
 

@@ -9,39 +9,44 @@ from vehicleDatabase import *
 app = Flask(__name__)
 cors = CORS(app)
 
-@app.route("/get_data", methods = ["POST"])
-def get_data():
+
+# Update the database with new entries 
+@app.route("/getData", methods = ["POST"])
+def getData():
     if(request.method == "POST"):
         # JSON Format from frontend
-        request_data = request.get_json()
-        altitude = request_data['altitude']
-        battery = request_data['battery']
+        requestData = request.get_json()
 
-        macVehicle = callVehicles.new_battery(battery)
-        macVehicle = callVehicles.new_altitude(altitude)
+        # TODO: Need to establish way to save data to a specific vehicle database (currently only to testing)
+
+        # Initialize the vehicle datapoints  
+        altitude = requestData['altitude']
+        battery = requestData['battery']
+
+        # Update the vehicle dictonary with given values 
+        requestedVehicle = saveVehicleValues.new_battery(battery)
+        requestedVehicle = saveVehicleValues.new_altitude(altitude)
        
-        vehicleDatabase.saveData(macVehicle)
+        # Save the vehicle dictonary into SQLite Database
+        vehicleDatabase.saveData(requestedVehicle)
 
-        return '''The value is: {}'''.format(macVehicle)
-    
-    # GET REQUEST
-    return "Hello World :))"
+        # TEST: show that the vehicle dictionary has been saved correctly
+        return '''The value is: {}'''.format(requestedVehicle)
 
-@app.route("/post_data", methods = ["POST"])
-def post_data():
+@app.route("/postData", methods = ["POST"])
+def postData():
     if(request.method == "POST"):
         # JSON Format from frontend
-        request_data = request.get_json()
-        vehicle_name = request_data['vehicle_name']
-        
-        macVehicle = vehicleDatabase.getData(vehicle_name)
-        #return '''The value is: {}'''.format(macVehicle)
+        requestData = request.get_json()
 
-        #print(macVehicle)
-        return jsonify(macVehicle)
-    
-    # GET REQUEST
-    return "Hello World :))"
+        # Initialize the requested vehicle_name
+        vehicle_name = requestData['vehicle_name']
+        
+        # Query the database for the requested vehicle & save into dictonary
+        requestedVehicle = vehicleDatabase.getData(vehicle_name)
+
+        # Send JSON Object back to frontend
+        return jsonify(requestedVehicle)
 
 
 # the host value allows traffic from anywhere to run this 
