@@ -69,127 +69,138 @@ class vehicleDataFormat():
 
     # Setters and Getters  
     
-    def set_altitude(self, altitude):
+    def setAltitude(self, altitude):
         if(type(altitude) == float):           
             self.update({"altitude": altitude})
     
-    def get_altitude(self):
+    def getAltitude(self):
         return self.get("altitude")
 
-    #Add "Altitude color"
+    #Add "Altitude color" (Subject to change)
+    def setAltitudeColor(self, altitudeColor):
+        if(type(altitudeColor) == str):           
+            self.update({"altitude_color": altitudeColor})
     
-    def set_battery(self, battery):
+    def getAltitudeColor(self):
+        return self.get("altitude_color")
+    
+    def setBattery(self, battery):
         if(type(battery) == float):           
             self.update({"battery": battery})
     
-    def get_battery(self):
+    def getBattery(self):
         return self.get("battery")
 
-    #Add "Battery color"
-
-    def set_currentStage(self, stage):
-        if(type(stage) == int):           
-            self.update({"current_Stage": stage})
+    #Add "Battery color" (Subject to change)
+    def setBatteryColor(self, batteryColor):
+        if(type(batteryColor) == str):           
+            self.update({"battery_color": batteryColor})
     
-    def get_currentStage(self):
+    def getBatteryColor(self):
+        return self.get("battery_color")
+
+    def setCurrentStage(self, stage):
+        if(type(stage) == int):           
+            self.update({"current_stage": stage})
+    
+    def getCurrentStage(self):
         return self.get("current_stage")
 
-    def set_geofenceCompliant(self, is_compliant):
-        if(type(is_compliant) == bool):           
-            self.update({"geoFence_compliant": is_compliant})
+    def setGeofenceCompliant(self, isCompliant):
+        if(type(isCompliant) == bool):           
+            self.update({"geoFence_compliant": isCompliant})
     
-    def get_geofenceCompliant(self):
+    def getGeofenceCompliant(self):
         return self.get("geofence_compliant")
 
     #Add "Geofence Compliant color"
     
-    def set_latitude(self, latitude):
+    def setLatitude(self, latitude):
         if(type(latitude) == float):           
             self.update({"latitude": latitude})
     
-    def get_latitude(self):
+    def getLatitude(self):
         return self.get("latitude")
     
-    def set_longitude(self, longitude):
+    def setLongitude(self, longitude):
         if(type(longitude) == float):           
             self.update({"longitude": longitude})
     
-    def get_longitude(self):
+    def getLongitude(self):
         return self.get("longitude")
 
-    def set_pitch(self, pitch):
+    def setPitch(self, pitch):
         if(type(pitch) == float):           
             self.update({"pitch": pitch})
     
-    def get_pitch(self):
+    def getPitch(self):
         return self.get("pitch")
 
     #Add "Pitch color" 
 
-    def set_propulsion(self, propulsion):
+    def setPropulsion(self, propulsion):
         if(type(propulsion) == bool):           
             self.update({"propulsion": propulsion})
     
-    def get_propulsion(self):
+    def getPropulsion(self):
         return self.get("propulsion")
 
     #Add "Propulsion color" 
 
-    def set_roll(self, roll):
+    def setRoll(self, roll):
         if(type(roll) == float):           
             self.update({"roll": roll})
     
-    def get_roll(self):
+    def getRoll(self):
         return self.get("roll")
 
     #Add "Roll color" 
 
-    def set_sensorsOk(self, sensorOk):
+    def setSensorsOk(self, sensorOk):
         if(type(sensorOk) == bool):           
             self.update({"sensors_ok": sensorOk})
     
-    def get_sensorsOk(self):
+    def getSensorsOk(self):
         return self.get("sensors_ok")
     
-    def set_speed(self, speed):
+    def setSpeed(self, speed):
         if(type(speed) == float):           
             self.update({"speed": speed})
     
-    def get_speed(self):
+    def getSpeed(self):
         return self.get("speed")
 
-    def set_stageCompleted(self, stageComplete):
+    def setStageCompleted(self, stageComplete):
         if(type(stageComplete) == bool):           
             self.update({"stage_completed": stageComplete})
     
-    def get_stageCompleted(self):
+    def getStageCompleted(self):
         return self.get("stage_completed")
 
-    def set_status(self, status):
+    def setStatus(self, status):
         if(type(status) == int):           
             self.update({"status": status})
     
-    def get_status(self):
+    def getStatus(self):
         return self.get("status")
         
-    def set_yaw(self, yaw):
+    def setYaw(self, yaw):
         if(type(yaw) == float):           
             self.update({"yaw": yaw})
     
-    def get_yaw(self):
+    def getYaw(self):
         return self.get("yaw")
 
-    def set_time_since_last_packet(self, time_since_last_packet):
-        if(type(time_since_last_packet) == int):           
-            self.update({"time_since_last_packet": time_since_last_packet})
+    def setTimeSinceLastPacket(self, timeSinceLastPacket):
+        if(type(timeSinceLastPacket) == int):           
+            self.update({"time_since_last_packet": timeSinceLastPacket})
     
-    def get_time_since_last_packet(self):
+    def getTimeSinceLastPacket(self):
         return self.get("time_since_last_packet")
-
     
-    def set_last_packet_time(self, last_packet_time):
-        if(type(last_packet_time) == int):           
-            self.update({"last_packet_time": last_packet_time})
+    def setLastPacketTime(self, lastPacketTime):
+        if(type(lastPacketTime) == int):           
+            self.update({"last_packet_time": lastPacketTime})
     
-    def get_last_packet_time(self):
+    def getLastPacketTime(self):
         return self.get("last_packet_time")

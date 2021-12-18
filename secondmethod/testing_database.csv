@@ -6,11 +6,7 @@ altitude,altitude_color,battery,battery_color
 80.0,Yellow,70.0,Yellow
 70.0,Red,80.0,Green
 65.0,Red,60.0,Yellow
-1.0,Red,85.0,Blue
-1.0,Red,85.0,Blue
-1.0,Red,70.0,Blue
-1.0,Red,70.0,Blue
-1.0,Red,70.0,Blue
-1.0,Red,70.0,Blue
-1.0,Red,70.0,Blue
 45.0,Yellow,25.0,Green
+10.0,Red,20.0,Yellow
+12.0,Red,20.0,Yellow
+100.0,Red,15.0,Blue

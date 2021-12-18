@@ -1,7 +1,7 @@
 
 from flask import Flask, redirect, url_for, request, jsonify
 from flask_cors import CORS, cross_origin
-from callVehic import *
+from updateVehicle import *
 from vehicleDatabase import *
 
 # https://www.digitalocean.com/community/tutorials/processing-incoming-request-data-in-flask
@@ -11,27 +11,34 @@ cors = CORS(app)
 
 
 # Update the database with new entries 
-@app.route("/getData", methods = ["POST"])
-def getData():
+@app.route("/sendData", methods = ["POST"])
+def sendData():
     if(request.method == "POST"):
         # JSON Format from frontend
         requestData = request.get_json()
 
-        # TODO: Need to establish way to save data to a specific vehicle database (currently only to testing)
+        # Initialize the requested vehicle name
+        vehicleName = requestData['vehicle_name']
 
         # Initialize the vehicle datapoints  
         altitude = requestData['altitude']
+        altitudeColor = requestData ['altitude_color']
         battery = requestData['battery']
+        batteryColor = requestData['battery_color']
+        
 
-        # Update the vehicle dictonary with given values 
-        requestedVehicle = saveVehicleValues.new_battery(battery)
-        requestedVehicle = saveVehicleValues.new_altitude(altitude)
+        # Update the vehicle dictionary with given values 
+        requestedVehicle = updateVehicle.newAltitude(altitude)
+        requestedVehicle = updateVehicle.newAltitudeColor(altitudeColor)
+        requestedVehicle = updateVehicle.newBattery(battery)
+        requestedVehicle = updateVehicle.newBatteryColor(batteryColor)
+
        
-        # Save the vehicle dictonary into SQLite Database
-        vehicleDatabase.saveData(requestedVehicle)
+        # Save the vehicle dictionary into SQLite Database
+        vehicleDatabase.saveData(requestedVehicle, vehicleName)
 
         # TEST: show that the vehicle dictionary has been saved correctly
-        return '''The value is: {}'''.format(requestedVehicle)
+        return '''The value is: {}'''.format(requestData)
 
 @app.route("/postData", methods = ["POST"])
 def postData():
@@ -39,11 +46,11 @@ def postData():
         # JSON Format from frontend
         requestData = request.get_json()
 
-        # Initialize the requested vehicle_name
-        vehicle_name = requestData['vehicle_name']
+        # Initialize the requested vehicle name
+        vehicleName = requestData['vehicle_name']
         
-        # Query the database for the requested vehicle & save into dictonary
-        requestedVehicle = vehicleDatabase.getData(vehicle_name)
+        # Query the database for the requested vehicle & save into dictionary
+        requestedVehicle = vehicleDatabase.getData(vehicleName)
 
         # Send JSON Object back to frontend
         return jsonify(requestedVehicle)

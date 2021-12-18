@@ -1,10 +1,9 @@
 import sqlite3
 from sqlite3 import Error
-from callVehic import *
+from updateVehicle import *
 import pandas as pd 
-import json
 
-# vehicleDatabase.py handles storing vehicle data into a database
+# vehicleDatabase.py handles storing vehicle data into a database & getting vehicle data
 
 #if __name__ == '__main__':
 
@@ -15,7 +14,7 @@ dbFile = "database.db"
 class vehicleDatabase():
 
     # Method to save new vehicle dictionary entry to SQLite Database
-    def saveData(requestedVehicle):        
+    def saveData(requestedVehicle, vehicleName):        
         try: 
             # Establish connection with SQLite database "database.db"
             connection = sqlite3.connect(dbFile, isolation_level=None, detect_types=sqlite3.PARSE_COLNAMES)
@@ -23,14 +22,12 @@ class vehicleDatabase():
             # Enables SQLite commands
             cursor = connection.cursor()
 
-            # TODO: Need to rewrite sql commands with requested vehicle name (hardcoded to testing right now)
-
             # TEST: Tests creating a table
-            testing = """ CREATE TABLE IF NOT EXISTS testing(altitude FLOAT, altitude_color TEXT, battery FLOAT, battery_color TEXT)"""
+            testingTable = """ CREATE TABLE IF NOT EXISTS """ + str(vehicleName) + """(altitude FLOAT, altitude_color TEXT, battery FLOAT, battery_color TEXT)"""
 
             # Create an empty table with the vehicle data. 
             # Parameters follow the format (varName, TYPE). 
-            vehicle = """ CREATE TABLE IF NOT EXISTS vehicle(altitude FLOAT, 
+            vehicleTable = """ CREATE TABLE IF NOT EXISTS """ + str(vehicleName) + """(altitude FLOAT, 
                                                                 altitude_color TEXT, 
                                                                 battery FLOAT, 
                                                                 battery_color TEXT, 
@@ -54,27 +51,31 @@ class vehicleDatabase():
                                                                 last_packet_time INTEGER)"""
 
             # Creates the table
-            cursor.execute(testing)
+            cursor.execute(testingTable)
 
             # Enters the values into the requested vehicle database
-            cursor.execute('INSERT INTO testing(altitude, battery) VALUES(:altitude, :battery)', requestedVehicle)
+            executionLine = 'INSERT INTO ' + str(vehicleName) + '(altitude, altitude_color, battery, battery_color) VALUES(:altitude, :altitude_color, :battery, :battery_color)'
+            cursor.execute(executionLine, requestedVehicle)
 
-            # cursor.execute('''INSERT INTO vehicle(altitude, altitude_color, battery, battery_color, current_stage, geofence_compliant,
+            # executionLine = '''INSERT INTO ''' + str(vehicleName) + '''(altitude, altitude_color, battery, battery_color, current_stage, geofence_compliant,
             #                                    geofence_compliant_color, latitude, longitude, pitch, pitch_color, propulsion, 
             #                                    propulsion_color, roll, roll_color, sensors_ok, speed, stage_completed, status, yaw,
             #                                    time_since_last_packet, last_packet_time) VALUES(:altitude, :altitude_color, :battery, 
             #                                    :battery_color, :current_stage, :geofence_compliant, :geofence_compliant_color, :latitude, 
             #                                    :longitude, :pitch, :pitch_color, :propulsion, :propulsion_color, :roll, :roll_color, :sensors_ok,
-            #                                    :speed, :stage_completed, :status, :yaw, :time_since_last_packet, :last_packet_time)''', macVehicle)
+            #                                    :speed, :stage_completed, :status, :yaw, :time_since_last_packet, :last_packet_time)'''
+            # cursor.execute(executionLine, requestedVehicle)
 
             # TEST: Accepting packets under certain conditions
             #if (json1['altitude'] == 1.0):
             #    cursor.execute('INSERT INTO testing(altitude, altitude_color, battery, battery_color) VALUES(:altitude, :altitude_color, :battery, :battery_color)', json1)
             
-
             # Export the database onto an CSV file
-            db_file = pd.read_sql_query("SELECT * FROM testing", connection)
-            db_file.to_csv('text_database.csv', index = False)
+            databaseLine = "SELECT * FROM " + str(vehicleName)
+            csvTitle = str(vehicleName) + "_database.csv"
+            
+            db_file = pd.read_sql_query(databaseLine, connection)
+            db_file.to_csv(csvTitle, index = False)
 
             connection.commit()
             #connection.close()
@@ -94,18 +95,29 @@ class vehicleDatabase():
             # Select from the requested vehicle database and get the last entry
             execution_line = "SELECT * FROM " + str(vehicleName) + " ORDER BY rowid DESC LIMIT 1"
             cursor.execute(execution_line)
-            
-            # TODO: try to create dictonary instead of list[dictonary]
-            # Create a dictonary for the last entry
+
+            # Create a list[dictionary] for the last entry
             lastEntry = [dict((cursor.description[i][0], value) \
                 for i, value in enumerate(row)) for row in cursor.fetchall()]
 
+            # Extract dictionary from list 
+            for entry in lastEntry:
+                if entry['altitude'] != None:
+                    finalizedEntry = entry
+                    break
+                else:
+                    finalizedEntry = None
+
             connection.close()
 
-            return lastEntry
+            return finalizedEntry
 
             #one = False
             #return (lastEntry[0] if lastEntry else None) if one else lastEntry
         except Error as e:
             print(e)
+
+# Used for testing
+#x = "testing"
+#vehicleDatabase.getData(x)
 
