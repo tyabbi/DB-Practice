@@ -38,7 +38,7 @@ def sendData():
         vehicleDatabase.saveData(requestedVehicle, vehicleName)
 
         # TEST: show that the vehicle dictionary has been saved correctly
-        return '''The value is: {}'''.format(requestData)
+        return '''The value is: {}'''.format(requestedVehicle)
 
 @app.route("/postData", methods = ["POST"])
 def postData():
