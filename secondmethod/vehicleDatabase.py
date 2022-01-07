@@ -85,6 +85,7 @@ class vehicleDatabase():
 
     def getData(vehicleName):
         # https://stackoverflow.com/questions/3286525/return-sql-table-as-json-in-python
+        
         try:
             # Establish connection with SQLite database "database.db"
             connection = sqlite3.connect(dbFile, isolation_level=None, detect_types=sqlite3.PARSE_COLNAMES) 

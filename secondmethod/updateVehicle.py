@@ -32,8 +32,62 @@ class updateVehicle():
 
     def newGeofenceCompilant(isCompilant):
         vehicleDataFormat.setGeofenceCompliant(vehicleEntry, isCompilant)
-        return vehicleEntry   
+        return vehicleEntry 
 
+    # Geofence Color
 
+    def newLatitude(latitude):
+        vehicleDataFormat.setLatitude(vehicleEntry, latitude)
+        return vehicleEntry 
+
+    def newLongitude(longitude):
+        vehicleDataFormat.setLongitude(vehicleEntry, longitude)
+        return vehicleEntry 
+
+    def newPitch(pitch):
+        vehicleDataFormat.setPitch(vehicleEntry, pitch)
+        return vehicleEntry 
+
+    # Pitch color
+
+    def newPropulsion(propulsion):
+        vehicleDataFormat.setPropulsion(vehicleEntry, propulsion)
+        return vehicleEntry 
+    
+    # Propulsion Color
+
+    def newRoll(roll):
+        vehicleDataFormat.setRoll(vehicleEntry, roll)
+        return vehicleEntry 
+    
+    # Roll Color
+
+    def newSensorsOk(sensorOk):
+        vehicleDataFormat.setSensorsOk(vehicleEntry, sensorOk)
+        return vehicleEntry 
+
+    def newSpeed(speed):
+        vehicleDataFormat.setSpeed(vehicleEntry, speed)
+        return vehicleEntry
+
+    def newStageCompleted(stageComplete):
+        vehicleDataFormat.setStageCompleted(vehicleEntry, stageComplete)
+        return vehicleEntry
+
+    def newStatus(status):
+        vehicleDataFormat.setStatus(vehicleEntry, status)
+        return vehicleEntry
+    
+    def newYaw(yaw):
+        vehicleDataFormat.setYaw(vehicleEntry, yaw)
+        return vehicleEntry
+
+    def newTimeSinceLastPacket(timeSinceLastPacket):
+        vehicleDataFormat.setTimeSinceLastPacket(vehicleEntry, timeSinceLastPacket)
+        return vehicleEntry
+
+    def newLastPacketTime(lastPacketTime):
+        vehicleDataFormat.setLastPacketTime(vehicleEntry, lastPacketTime)
+        return vehicleEntry
 
 

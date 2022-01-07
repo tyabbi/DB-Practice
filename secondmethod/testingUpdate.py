@@ -4,6 +4,7 @@ from vehicleDatabase import *
 # testingUpdate.py is for testing dictionary updating 
 
 # TODO: check if this method is valid 
+# TODO: Incorporate it into app.py
 
 # Create vehicle dictionary from vehicleDataFormat.py
 vehicleEntry = vehicleDataFormat.dataFormat()
@@ -12,8 +13,8 @@ vehicleEntry = vehicleDataFormat.dataFormat()
 newData = {"vehicle_name": "testing",
 "altitude": 100.0,
 "altitude_color": "Red",
-"battery": 15.0,
-"battery_color": "Blue"}
+"battery": 25.0,
+"battery_color": "Yellow"}
 
 # Initialize requested vehicle 
 vehicleName = newData['vehicle_name']
