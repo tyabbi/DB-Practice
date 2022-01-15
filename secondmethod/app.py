@@ -11,6 +11,8 @@ cors = CORS(app)
 
 # hello this is shaz, this test
 
+# get latest stage 
+
 # Update the database with new entries 
 @app.route("/sendData", methods = ["POST"])
 def sendData():

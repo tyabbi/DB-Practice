@@ -1,2 +1,2 @@
-longitude,latitude,battery,mode,last_packet_time,current_stage
-9.34,6.58,70,autonomous,2,
+latitude,longitude,battery,mode,last_packet_time,current_stage
+33.933729,-117.6318437,80,Manual,52,4

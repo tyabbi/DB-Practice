@@ -5,8 +5,6 @@ import pandas as pd
 
 # used to create data for frontend
 
-#if __name__ == '__main__':
-
 # Values to create connection to SQLite Database
 connection = None
 dbFile = "database.db"
@@ -18,20 +16,19 @@ try:
     cursor = connection.cursor()
 
     # TEST: Tests creating a table
-    testingTable = """ CREATE TABLE IF NOT EXISTS MEA(longitude FLOAT, latitude FLOAT, battery INT, mode STRING, last_packet_time INTEGER, current_stage INTEGER) """
-    executionLine = 'INSERT INTO MEA(longitude, latitude, battery, mode, last_packet_time) VALUES(9.34, 6.58, 70, "autonomous", 2)'
-    # Creates the table
-    cursor.execute(testingTable)
-    cursor.execute(executionLine)
+    # testingTable = """ CREATE TABLE IF NOT EXISTS MEA(latitude FLOAT, longitude FLOAT, battery INT, mode STRING, last_packet_time INTEGER, current_stage INTEGER) """
+    # # # Creates the table
+    # cursor.execute(testingTable)
 
 
-    databaseLine = "SELECT * FROM MEA"
-    csvTitle = "MEA_database.csv"
+
+    databaseLine = "SELECT * FROM ERU"
+    csvTitle = "ERU_database.csv"
     db_file = pd.read_sql_query(databaseLine, connection)
     db_file.to_csv(csvTitle, index = False)
     
     # how to delete tables 
-    # cursor.execute("DROP table mac")
+    # cursor.execute("DROP table MEA")
     
     connection.close()
 
