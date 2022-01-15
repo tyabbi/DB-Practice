@@ -3,6 +3,7 @@ from flask import Flask, redirect, url_for, request, jsonify
 from flask_cors import CORS, cross_origin
 from updateVehicle import *
 from vehicleDatabase import *
+from datetime import datetime
 
 # https://www.digitalocean.com/community/tutorials/processing-incoming-request-data-in-flask
 
@@ -11,17 +12,16 @@ cors = CORS(app)
 
 # hello this is shaz, this test
 
-# get latest stage 
-
 # Update the database with new entries 
 @app.route("/sendData", methods = ["POST"])
 def sendData():
     if(request.method == "POST"):
-        # JSON Format from frontend
+        # JSON Format from comm
         requestData = request.get_json()
 
         # Initialize the requested vehicle name
         vehicleName = requestData['vehicle_name']
+        #newTime = requestData['time']
 
         # Initialize the vehicle datapoints  
         altitude = requestData['altitude']
@@ -48,6 +48,9 @@ def sendData():
         timeSinceLastPacket = requestData['time_since_last_packet']
         lastPacketTime = requestData['last_packet_time']
         
+
+
+        #time1 = now.replace(hour=13, minute=0, second=0, microsecond=0)
 
         # Update the vehicle dictionary with given values 
         requestedVehicle = updateVehicle.newAltitude(altitude)
@@ -94,6 +97,10 @@ def postData():
 
         # Send JSON Object back to frontend
         return jsonify(requestedVehicle)
+
+@app.route("/generalStage", methods = ['GET'])
+def generalStage():
+    return "hi"
 
 
 # the host value allows traffic from anywhere to run this 

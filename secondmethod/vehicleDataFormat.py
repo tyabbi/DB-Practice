@@ -52,7 +52,7 @@ class vehicleDataFormat():
             'status': 0,
             'yaw': 0.0,
             'time_since_last_packet': 0,
-            'last_packet_time': 0
+            'last_packet_time': 0,
         }
         return vehicleFormat
 

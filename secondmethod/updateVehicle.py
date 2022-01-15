@@ -1,8 +1,35 @@
 from vehicleDataFormat import *
+from datetime import datetime
+
 
 # Create vehicle dictionary from vehicleDataFormat.py
 vehicleEntry = vehicleDataFormat.dataFormat()
 
+
+# updateStage(time, newestStage)
+
+# TODO: finish method for time & general stage (logic is in testing.py)
+
+now = datetime.now()
+
+class updateStage():
+
+    def checkTime(newTime, newStage):
+
+        oldTime = now.replace(hour=12, minute=0, second=0, microsecond=0).time()
+        # the latest stage
+        generalStage = 0
+
+        stageFormat = {
+            "time": oldTime,
+            "general_stage": generalStage
+        }
+
+        if (newTime > oldTime):
+            oldTime = newTime
+            generalStage = newStage
+
+        return stageFormat
 class updateVehicle():
 
     # TODO: add the methods for all datapoints
