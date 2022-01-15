@@ -11,6 +11,7 @@ import pandas as pd
 connection = None
 dbFile = "database.db"
 
+
 class vehicleDatabase():
 
     # Method to save new vehicle dictionary entry to SQLite Database
@@ -24,6 +25,7 @@ class vehicleDatabase():
 
             # TEST: Tests creating a table
             testingTable = """ CREATE TABLE IF NOT EXISTS """ + str(vehicleName) + """(altitude FLOAT, altitude_color TEXT, battery FLOAT, battery_color TEXT)"""
+            
 
             # Create an empty table with the vehicle data. 
             # Parameters follow the format (varName, TYPE). 
@@ -103,7 +105,7 @@ class vehicleDatabase():
 
             # Extract dictionary from list 
             for entry in lastEntry:
-                if entry['altitude'] != None:
+                if entry['longitude'] != None:
                     finalizedEntry = entry
                     break
                 else:
