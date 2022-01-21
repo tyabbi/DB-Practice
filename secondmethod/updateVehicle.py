@@ -1,3 +1,4 @@
+import json
 from vehicleDataFormat import *
 from datetime import datetime
 
@@ -15,21 +16,48 @@ now = datetime.now()
 class updateStage():
 
     def checkTime(newTime, newStage):
+        # #### Used for resetting updateStage.json ###########################
+        # # The default time and stage will be 12 AM and 0 
+        # oldTime = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        # generalStage = 0
 
-        oldTime = now.replace(hour=12, minute=0, second=0, microsecond=0).time()
-        # the latest stage
-        generalStage = 0
+        # # Dictionary format to be saved to JSON File 
+        # stageFormat = {
+        #     "time": str(oldTime),
+        #     "general_stage": generalStage
+        # }
 
-        stageFormat = {
-            "time": oldTime,
-            "general_stage": generalStage
-        }
+        # # Writing dictionary into updateStage.json 
+        # jsonFile = open("updateStage.json", "w")
+        # json.dump(stageFormat, jsonFile)
+        # jsonFile.close()
+        # ####################################################################
 
-        if (newTime > oldTime):
-            oldTime = newTime
-            generalStage = newStage
+        # Open the updateStage.json and load it 
+        jsonFile = open("updateStage.json")
+        dataValue = json.load(jsonFile)
 
-        return stageFormat
+        # Declare variable for the stored time and convert from string to time data type
+        jsonValue = dataValue['time']
+        jsonTime = datetime.strptime(jsonValue, '%Y-%m-%d %H:%M:%S')
+        oldTime = jsonTime.time()
+
+        newTime = datetime.strptime(newTime, '%Y-%m-%d %H:%M:%S')
+
+        # Check if newTime is greater and update the JSON File
+        if (newTime.time() > oldTime):
+
+            # Dictionary format for the new time and stage
+            stageFormat = {
+            "time": str(newTime),
+            "general_stage": newStage
+            }
+
+            # Write the dictionary to the JSON File
+            jsonFile = open("updateStage.json", "w")
+            json.dump(stageFormat, jsonFile)
+            jsonFile.close()
+
 class updateVehicle():
 
     # TODO: add the methods for all datapoints
@@ -117,4 +145,10 @@ class updateVehicle():
         vehicleDataFormat.setLastPacketTime(vehicleEntry, lastPacketTime)
         return vehicleEntry
 
+    def newTime(time):
+        vehicleDataFormat.setTime(vehicleEntry, time)
+        return vehicleEntry
 
+# # For testing 
+# newestPacketTime = now.replace(hour=8, minute=6, second=0, microsecond=0)
+# updateStage.checkTime(newestPacketTime, 4)

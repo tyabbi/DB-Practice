@@ -25,7 +25,8 @@ class vehicleDataFormat():
             'status': 0,
             'yaw': 0.0,
             'time_since_last_packet': 0,
-            'last_packet_time': 0
+            'last_packet_time': 0,
+            'time': "2022-01-01 00:00:00"
         }
 
 
@@ -53,6 +54,7 @@ class vehicleDataFormat():
             'yaw': 0.0,
             'time_since_last_packet': 0,
             'last_packet_time': 0,
+            'time': "2022-01-01 00:00:00"
         }
         return vehicleFormat
 
@@ -204,3 +206,10 @@ class vehicleDataFormat():
     
     def getLastPacketTime(self):
         return self.get("last_packet_time")
+
+    def setTime(self, time):
+        if(type(time) == str):           
+            self.update({"time": time})
+    
+    def getTime(self):
+        return self.get("time")

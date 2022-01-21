@@ -7,38 +7,62 @@ from datetime import datetime
 # used for testing 
 
 now = datetime.now()
+# print(now)
 
-oldTime = now.replace(hour=12, minute=0, second=0, microsecond=0).time()
-# the latest stage
-generalStage = 0
+# oldTime = now.replace(hour=12, minute=0, second=0, microsecond=0).time()
+# # the latest stage
+# generalStage = 0
 
-# New Time
-newestPacketTime = now.replace(hour=8, minute=0, second=0, microsecond=0).time()
+# # New Time
+# newestPacketTime = now.replace(hour=14, minute=5, second=0, microsecond=0).time()
 
-newData = {"vehicle_name": "testing",
-            "altitude": 100.0,
-            "altitude_color": "Red",
-            "battery": 25.0,
-            "time": str(newestPacketTime)}
+# newData = {"vehicle_name": "testing",
+#             "altitude": 100.0,
+#             "altitude_color": "Red",
+#             "battery": 25.0,
+#             "time": str(newestPacketTime)}
 
 
-x = newData['time']
-jsonTime = datetime.strptime(x, '%H:%M:%S')
-newTime = jsonTime.time()
-newStage = 1
+# x = newData['time']
+# jsonTime = datetime.strptime(x, '%H:%M:%S')
+# newTime = jsonTime.time()
+# newStage = 1
 
-print("old info")
-print(oldTime)
-print(generalStage)
+# print("old info")
+# print(oldTime)
+# print(generalStage)
 
-# compare the old time/stage with the new time/stage
-if (newTime > oldTime):
-    oldTime = newTime
-    generalStage = newStage
+# # compare the old time/stage with the new time/stage
+# if (newTime > oldTime):
+#     oldTime = newTime
+#     generalStage = newStage
 
-print("new info")
-print(oldTime)
-print(generalStage)
+# print("new info")
+# print(oldTime)
+# print(generalStage)
+
+#Values to create connection to SQLite Database
+connection = None
+dbFile = "database.db"
+
+
+connection = sqlite3.connect(dbFile, isolation_level=None, detect_types=sqlite3.PARSE_COLNAMES)
+            
+# Enables SQLite commands
+cursor = connection.cursor()
+
+x = {
+    'altitude': 87.25, 
+    'current_stage': 0,
+    'time': str(now)
+}
+
+# TEST: Tests creating a table
+testingTable = """ CREATE TABLE IF NOT EXISTS testing(altitude FLOAT, current_stage INTEGER, time STRING)"""
+cursor.execute(testingTable)
+
+execution = '''INSERT INTO testing(altitude, current_stage, time) VALUES(:altitude, :current_stage, :time)'''
+cursor.execute(execution, x)
 
 
 
