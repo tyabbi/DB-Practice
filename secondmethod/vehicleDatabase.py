@@ -24,7 +24,7 @@ class vehicleDatabase():
             cursor = connection.cursor()
 
             # TEST: Tests creating a table
-            testingTable = """ CREATE TABLE IF NOT EXISTS """ + str(vehicleName) + """(altitude FLOAT, current_stage INTEGER, time STRING)"""
+            testingTable = """ CREATE TABLE IF NOT EXISTS """ + str(vehicleName) + """(altitude FLOAT, current_stage INTEGER, time STRING, stage_name STRING)"""
             
 
             # Create an empty table with the vehicle data. 
@@ -51,22 +51,23 @@ class vehicleDatabase():
                                                                 yaw FLOAT, 
                                                                 time_since_last_packet INTEGER, 
                                                                 last_packet_time INTEGER, 
-                                                                time STRING)"""
+                                                                time STRING,
+                                                                stage_name STRING)"""
 
             # Creates the table
             cursor.execute(testingTable)
 
             # Enters the values into the requested vehicle database
-            executionLine = 'INSERT INTO ' + str(vehicleName) + '(altitude, current_stage, time) VALUES(:altitude, :current_stage, :time)'
+            executionLine = 'INSERT INTO ' + str(vehicleName) + '(altitude, current_stage, time, stage_name) VALUES(:altitude, :current_stage, :time, :stage_name)'
             cursor.execute(executionLine, requestedVehicle)
 
             # executionLine = '''INSERT INTO ''' + str(vehicleName) + '''(altitude, altitude_color, battery, battery_color, current_stage, geofence_compliant,
             #                                    geofence_compliant_color, latitude, longitude, pitch, pitch_color, propulsion, 
             #                                    propulsion_color, roll, roll_color, sensors_ok, speed, stage_completed, status, yaw,
-            #                                    time_since_last_packet, last_packet_time, time) VALUES(:altitude, :altitude_color, :battery, 
+            #                                    time_since_last_packet, last_packet_time, time, stage_name) VALUES(:altitude, :altitude_color, :battery, 
             #                                    :battery_color, :current_stage, :geofence_compliant, :geofence_compliant_color, :latitude, 
             #                                    :longitude, :pitch, :pitch_color, :propulsion, :propulsion_color, :roll, :roll_color, :sensors_ok,
-            #                                    :speed, :stage_completed, :status, :yaw, :time_since_last_packet, :last_packet_time, :time)'''
+            #                                    :speed, :stage_completed, :status, :yaw, :time_since_last_packet, :last_packet_time, :time, :stage_name)'''
             # cursor.execute(executionLine, requestedVehicle)
 
             # TEST: Accepting packets under certain conditions

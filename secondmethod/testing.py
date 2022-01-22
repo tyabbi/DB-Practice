@@ -9,6 +9,7 @@ from datetime import datetime
 now = datetime.now()
 # print(now)
 
+#####################################################################################
 # oldTime = now.replace(hour=12, minute=0, second=0, microsecond=0).time()
 # # the latest stage
 # generalStage = 0
@@ -41,6 +42,8 @@ now = datetime.now()
 # print(oldTime)
 # print(generalStage)
 
+#####################################################################################
+
 #Values to create connection to SQLite Database
 connection = None
 dbFile = "database.db"
@@ -54,17 +57,18 @@ cursor = connection.cursor()
 x = {
     'altitude': 87.25, 
     'current_stage': 0,
-    'time': str(now)
+    'time': str(now),
+    'stage_name': "Ready to Start"
 }
 
 # TEST: Tests creating a table
-testingTable = """ CREATE TABLE IF NOT EXISTS testing(altitude FLOAT, current_stage INTEGER, time STRING)"""
+testingTable = """ CREATE TABLE IF NOT EXISTS testing(altitude FLOAT, current_stage INTEGER, time STRING, stage_name STRING)"""
 cursor.execute(testingTable)
 
-execution = '''INSERT INTO testing(altitude, current_stage, time) VALUES(:altitude, :current_stage, :time)'''
+execution = '''INSERT INTO testing(altitude, current_stage, time, stage_name) VALUES(:altitude, :current_stage, :time, :stage_name)'''
 cursor.execute(execution, x)
 
-
+#####################################################################################
 
 # used to create data for frontend
 
@@ -97,3 +101,28 @@ cursor.execute(execution, x)
 
 # except Error as e: 
 #     print(e)
+
+#####################################################################################
+
+# # testingUpdate.py is for testing dictionary updating 
+
+# # Create vehicle dictionary from vehicleDataFormat.py
+# vehicleEntry = vehicleDataFormat.dataFormat()
+
+# # New Entry
+# newData = {"vehicle_name": "testing",
+# "altitude": 100.0,
+# "altitude_color": "Red",
+# "battery": 25.0,
+# "battery_color": "Yellow"}
+
+# # Initialize requested vehicle 
+# vehicleName = newData['vehicle_name']
+
+# # Updates dictionary format with new entry
+# vehicleEntry.update(newData)
+# # vehicle_name is not required
+# vehicleEntry.pop('vehicle_name')
+
+# # Save to database
+# #vehicleDatabase.saveData(vehicleEntry, vehicleName)

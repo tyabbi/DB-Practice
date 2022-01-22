@@ -5,10 +5,13 @@ from updateVehicle import *
 from vehicleDatabase import *
 from datetime import datetime
 
+
 # https://www.digitalocean.com/community/tutorials/processing-incoming-request-data-in-flask
 
 app = Flask(__name__)
 cors = CORS(app)
+
+# TODO: saving new mission form 
 
 # hello this is shaz, this test
 
@@ -46,8 +49,9 @@ def sendData():
         # timeSinceLastPacket = requestData['time_since_last_packet']
         # lastPacketTime = requestData['last_packet_time']
         time = requestData['time']
-        
 
+        stageName = updateStage.updateStageName(currentStage)
+        
         # Update the vehicle dictionary with given values 
         requestedVehicle = updateVehicle.newAltitude(altitude)
         # requestedVehicle = updateVehicle.newAltitudeColor(altitudeColor)
@@ -71,10 +75,11 @@ def sendData():
         # requestedVehicle = updateVehicle.newTimeSinceLastPacket(timeSinceLastPacket)
         # requestedVehicle = updateVehicle.newLastPacketTime(lastPacketTime)
         requestedVehicle = updateVehicle.newTime(time)
-       
+        requestedVehicle = updateVehicle.newStageName(stageName)
+        
         # Save the vehicle dictionary into SQLite Database
         vehicleDatabase.saveData(requestedVehicle, vehicleName)
-        updateStage.checkTime(time, currentStage)
+        
 
         # TEST: show that the vehicle dictionary has been saved correctly
         return '''The value is: {}'''.format(requestedVehicle)
@@ -94,14 +99,33 @@ def postData():
         # Send JSON Object back to frontend
         return jsonify(requestedVehicle)
 
+
+@app.route("/updateGeneralStage", methods = ['POST'])
+def updateGeneralStage():
+    if(request.method == "POST"):
+
+        now = datetime.now()
+        # JSON Format from comm
+        requestData = request.get_json()
+
+        #print(now)
+        #print(requestData)
+        updateStage.updateTime(requestData, now)
+
+        return 'hi'
+
+
 @app.route("/generalStage", methods = ['GET'])
 def generalStage():
 
     jsonFile = open("updateStage.json")
     dataValue = json.load(jsonFile)
 
+    # TODO: add vehicle name
+
     dataFormat = {
-        "general_stage": dataValue['general_stage']
+        "id": dataValue['general_stage'],
+        "name": dataValue['stage_name']
     }
 
     return dataFormat

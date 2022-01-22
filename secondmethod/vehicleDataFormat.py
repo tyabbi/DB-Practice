@@ -26,7 +26,8 @@ class vehicleDataFormat():
             'yaw': 0.0,
             'time_since_last_packet': 0,
             'last_packet_time': 0,
-            'time': "2022-01-01 00:00:00"
+            'time': "2022-01-01 00:00:00",
+            'stage_name': 'None'
         }
 
 
@@ -54,7 +55,8 @@ class vehicleDataFormat():
             'yaw': 0.0,
             'time_since_last_packet': 0,
             'last_packet_time': 0,
-            'time': "2022-01-01 00:00:00"
+            'time': '2022-01-01 00:00:00',
+            'stage_name': 'None'
         }
         return vehicleFormat
 
@@ -213,3 +215,10 @@ class vehicleDataFormat():
     
     def getTime(self):
         return self.get("time")
+
+    def setStageName(self, stageName):
+        if(type(stageName) == str):           
+            self.update({"stage_name": stageName})
+    
+    def getStageName(self):
+        return self.get("stage_name")
