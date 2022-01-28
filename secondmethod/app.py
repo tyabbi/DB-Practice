@@ -5,8 +5,11 @@ from updateVehicle import *
 from vehicleDatabase import *
 from datetime import datetime
 
-
 # https://www.digitalocean.com/community/tutorials/processing-incoming-request-data-in-flask
+
+# {
+#     emergencyStop: "MAC"
+# }
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -112,10 +115,9 @@ def updateGeneralStage():
         #print(requestData)
         updateStage.updateTime(requestData, now)
 
-        return 'hi'
+    return 'Update Complete'
 
-
-@app.route("/generalStage", methods = ['GET'])
+@app.route("/getGeneralStage", methods = ['GET'])
 def generalStage():
 
     jsonFile = open("updateStage.json")
@@ -125,10 +127,21 @@ def generalStage():
 
     dataFormat = {
         "id": dataValue['general_stage'],
+        "vehicle": dataValue['vehicle'],
         "name": dataValue['stage_name']
     }
 
     return dataFormat
+
+# @app.route("/newMission", methods = ['POST'])
+# def newMission():
+#     if(request.method == "POST"):
+
+#         requestData = request.get_json()
+
+#         print(requestData)
+
+#     return 'Update Complete'
 
 
 # the host value allows traffic from anywhere to run this 

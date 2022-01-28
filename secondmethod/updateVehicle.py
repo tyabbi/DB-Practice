@@ -15,7 +15,7 @@ class updateStage():
 
     def updateTime(newEntry, newTime):
         # #### Used for resetting updateStage.json ###########################
-        # # The default time and stage will be 12 AM and 0 
+        # The default time and stage will be 12 AM and 0 
         # oldTime = now.replace(hour=0, minute=0, second=0, microsecond=0)
         # generalStage = 0
 
