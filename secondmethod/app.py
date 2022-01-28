@@ -3,7 +3,9 @@ from flask import Flask, redirect, url_for, request, jsonify
 from flask_cors import CORS, cross_origin
 from updateVehicle import *
 from vehicleDatabase import *
+from generalStage import *
 from datetime import datetime
+from mission import *
 
 # https://www.digitalocean.com/community/tutorials/processing-incoming-request-data-in-flask
 
@@ -118,12 +120,10 @@ def updateGeneralStage():
     return 'Update Complete'
 
 @app.route("/getGeneralStage", methods = ['GET'])
-def generalStage():
+def getGeneralStage():
 
     jsonFile = open("updateStage.json")
     dataValue = json.load(jsonFile)
-
-    # TODO: add vehicle name
 
     dataFormat = {
         "id": dataValue['general_stage'],
@@ -133,15 +133,24 @@ def generalStage():
 
     return dataFormat
 
-# @app.route("/newMission", methods = ['POST'])
-# def newMission():
-#     if(request.method == "POST"):
+@app.route("/createNewMission", methods = ['POST'])
+def createNewMission():
+    if(request.method == "POST"):
 
-#         requestData = request.get_json()
+        requestData = request.get_json()
 
-#         print(requestData)
+        Mission.createMission(requestData)
 
-#     return 'Update Complete'
+    return 'Created New Mission'
+
+@app.route("/getNewMission", methods = ['GET'])
+def getnewMission():
+    if(request.method == "GET"):
+
+        jsonFile = open("newMission.json")
+        dataValue = json.load(jsonFile)
+
+    return dataValue
 
 
 # the host value allows traffic from anywhere to run this 
