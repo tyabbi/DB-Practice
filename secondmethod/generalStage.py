@@ -1,12 +1,13 @@
 from datetime import datetime
 import json
-# updateStage(time, newestStage)
-# TODO: finish method for time & general stage (logic is in testing.py)
+
+# updateStage.py handles checking stage id and updating the general stage for frontend
 
 now = datetime.now()
 
 class updateStage():
 
+    # Checks to see if the new entry is newer than the saved entry
     def updateTime(newEntry, newTime):
         # #### Used for resetting updateStage.json ###########################
         # # The default time and stage will be 12 AM and 0 
@@ -27,6 +28,7 @@ class updateStage():
         # jsonFile.close()
         # ###################################################################
 
+        # Information from the latest vehicle entry
         vehicleName = newEntry['vehicle_name']
         newStage = newEntry['current_stage']
         stageName = newEntry['stage_name']
@@ -53,14 +55,14 @@ class updateStage():
             "stage_name": stageName
             }
 
-            print(stageFormat)
+            # print(stageFormat)
 
             # Write the dictionary to the JSON File
             jsonFile = open("updateStage.json", "w")
             json.dump(stageFormat, jsonFile)
             jsonFile.close()
 
-
+    # Checks the stage id number and find the corresponding stage name
     def updateStageName(currentStage): 
         stageNames = ["Ready to Start", "Takeoff to Minimum Altitude", "Find the Hiker", "ERU Drop",
                     "ERU Landing Sequence", "Drive to Hiker", "Load the Hiker", "Go to EZ", "Transferring Hiker",

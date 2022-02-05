@@ -16,7 +16,6 @@ from mission import *
 app = Flask(__name__)
 cors = CORS(app)
 
-# TODO: saving new mission form 
 
 # hello this is shaz, this test
 
@@ -24,7 +23,7 @@ cors = CORS(app)
 @app.route("/sendData", methods = ["POST"])
 def sendData():
     if(request.method == "POST"):
-        # JSON Format from comm
+        # Object from comm
         requestData = request.get_json()
 
         # Initialize the requested vehicle name
@@ -55,6 +54,7 @@ def sendData():
         # lastPacketTime = requestData['last_packet_time']
         time = requestData['time']
 
+        # Gets the stage name of the sent stage id 
         stageName = updateStage.updateStageName(currentStage)
         
         # Update the vehicle dictionary with given values 
@@ -89,6 +89,7 @@ def sendData():
         # TEST: show that the vehicle dictionary has been saved correctly
         return '''The value is: {}'''.format(requestedVehicle)
 
+# Sends back the latest entry from requested vehicle
 @app.route("/postData", methods = ["POST"])
 def postData():
     if(request.method == "POST"):
@@ -104,13 +105,13 @@ def postData():
         # Send JSON Object back to frontend
         return jsonify(requestedVehicle)
 
-
+# Compares new request's stage/time to updateStage.json
 @app.route("/updateGeneralStage", methods = ['POST'])
 def updateGeneralStage():
     if(request.method == "POST"):
 
         now = datetime.now()
-        # JSON Format from comm
+        # Object from frontened
         requestData = request.get_json()
 
         #print(now)
@@ -119,12 +120,15 @@ def updateGeneralStage():
 
     return 'Update Complete'
 
+# Sends information from updateStage.json
 @app.route("/getGeneralStage", methods = ['GET'])
 def getGeneralStage():
 
+    # opens updateStage.json
     jsonFile = open("updateStage.json")
     dataValue = json.load(jsonFile)
 
+    # Saves the information needed to display general stage
     dataFormat = {
         "id": dataValue['general_stage'],
         "vehicle": dataValue['vehicle'],
@@ -133,20 +137,25 @@ def getGeneralStage():
 
     return dataFormat
 
+# Saves the new mission entry into newMission.json
 @app.route("/createNewMission", methods = ['POST'])
 def createNewMission():
     if(request.method == "POST"):
 
+        # Object from frontend
         requestData = request.get_json()
 
+        # Sends the new mission to be saved
         Mission.createMission(requestData)
 
     return 'Created New Mission'
 
+# Sends back the saved mission from newMission.json
 @app.route("/getNewMission", methods = ['GET'])
 def getnewMission():
     if(request.method == "GET"):
 
+        # Opens the saved mission entry from the JSON File and saves it into a variable 
         jsonFile = open("newMission.json")
         dataValue = json.load(jsonFile)
 

@@ -2,6 +2,7 @@ import json
 from vehicleDataFormat import *
 from datetime import datetime
 
+# updateVehicle.py handles saving new mission entry datapoints to the data format
 
 # Create vehicle dictionary from vehicleDataFormat.py
 vehicleEntry = vehicleDataFormat.dataFormat()

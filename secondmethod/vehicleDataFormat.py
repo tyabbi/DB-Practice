@@ -1,4 +1,5 @@
-# the format for the packet inputs (standard)
+# vehicleDataFormat.py handles the format for vehicle data and creating setter and getter methods
+
 class vehicleDataFormat():
     
     # Used for setter and getter methods
@@ -30,7 +31,7 @@ class vehicleDataFormat():
             'stage_name': 'None'
         }
 
-
+    # The Vehicle Data Format 
     def dataFormat():
         vehicleFormat = {
             'altitude': 0.0,
@@ -72,6 +73,7 @@ class vehicleDataFormat():
 #       return self.jsonFormat
 
     # Setters and Getters  
+    # TODO: Finish setters and getters for color
     
     def setAltitude(self, altitude):
         if(type(altitude) == float):           
