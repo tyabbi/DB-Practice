@@ -54,19 +54,19 @@ connection = sqlite3.connect(dbFile, isolation_level=None, detect_types=sqlite3.
 # Enables SQLite commands
 cursor = connection.cursor()
 
-x = {
-    'altitude': 87.25, 
-    'current_stage': 0,
-    'time': str(now),
-    'stage_name': "Ready to Start"
-}
+# x = {
+#     'altitude': 87.25, 
+#     'current_stage': 0,
+#     'time': str(now),
+#     'stage_name': "Ready to Start"
+# }
 
-# TEST: Tests creating a table
-testingTable = """ CREATE TABLE IF NOT EXISTS testing(altitude FLOAT, current_stage INTEGER, time STRING, stage_name STRING)"""
-cursor.execute(testingTable)
+# # TEST: Tests creating a table
+# testingTable = """ CREATE TABLE IF NOT EXISTS testing(altitude FLOAT, current_stage INTEGER, time STRING, stage_name STRING)"""
+# cursor.execute(testingTable)
 
-execution = '''INSERT INTO testing(altitude, current_stage, time, stage_name) VALUES(:altitude, :current_stage, :time, :stage_name)'''
-cursor.execute(execution, x)
+# execution = '''INSERT INTO testing(altitude, current_stage, time, stage_name) VALUES(:altitude, :current_stage, :time, :stage_name)'''
+# cursor.execute(execution, x)
 
 #####################################################################################
 
@@ -126,3 +126,4 @@ cursor.execute(execution, x)
 
 # # Save to database
 # #vehicleDatabase.saveData(vehicleEntry, vehicleName)
+

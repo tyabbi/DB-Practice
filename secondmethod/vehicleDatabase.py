@@ -1,6 +1,5 @@
 import sqlite3
 from sqlite3 import Error
-from updateVehicle import *
 import pandas as pd 
 
 # vehicleDatabase.py handles storing vehicle data into a database & getting vehicle data
@@ -32,7 +31,6 @@ class vehicleDatabase():
             vehicleTable = """ CREATE TABLE IF NOT EXISTS """ + str(vehicleName) + """(altitude FLOAT, 
                                                                 altitude_color TEXT, 
                                                                 battery FLOAT, 
-                                                                battery_color TEXT, 
                                                                 current_stage INTEGER,
                                                                 geofence_compliant BOOLEAN, 
                                                                 geofence_compliant_color TEXT, 
@@ -52,23 +50,24 @@ class vehicleDatabase():
                                                                 time_since_last_packet INTEGER, 
                                                                 last_packet_time INTEGER, 
                                                                 time STRING,
-                                                                stage_name STRING)"""
+                                                                stage_name STRING,
+                                                                mode STRING)"""
 
             # Creates the table
-            cursor.execute(testingTable)
+            cursor.execute(vehicleTable)
 
             # Enters the values into the requested vehicle database
-            executionLine = 'INSERT INTO ' + str(vehicleName) + '(altitude, current_stage, time, stage_name) VALUES(:altitude, :current_stage, :time, :stage_name)'
-            cursor.execute(executionLine, requestedVehicle)
-
-            # executionLine = '''INSERT INTO ''' + str(vehicleName) + '''(altitude, altitude_color, battery, battery_color, current_stage, geofence_compliant,
-            #                                    geofence_compliant_color, latitude, longitude, pitch, pitch_color, propulsion, 
-            #                                    propulsion_color, roll, roll_color, sensors_ok, speed, stage_completed, status, yaw,
-            #                                    time_since_last_packet, last_packet_time, time, stage_name) VALUES(:altitude, :altitude_color, :battery, 
-            #                                    :battery_color, :current_stage, :geofence_compliant, :geofence_compliant_color, :latitude, 
-            #                                    :longitude, :pitch, :pitch_color, :propulsion, :propulsion_color, :roll, :roll_color, :sensors_ok,
-            #                                    :speed, :stage_completed, :status, :yaw, :time_since_last_packet, :last_packet_time, :time, :stage_name)'''
+            # executionLine = 'INSERT INTO ' + str(vehicleName) + '(altitude, current_stage, time, stage_name) VALUES(:altitude, :current_stage, :time, :stage_name)'
             # cursor.execute(executionLine, requestedVehicle)
+
+            executionLine = '''INSERT INTO ''' + str(vehicleName) + '''(altitude, altitude_color, battery, current_stage, geofence_compliant,
+                                               geofence_compliant_color, latitude, longitude, pitch, pitch_color, propulsion, 
+                                               propulsion_color, roll, roll_color, sensors_ok, speed, stage_completed, status, yaw,
+                                               time_since_last_packet, last_packet_time, time, stage_name, mode) VALUES(:altitude, :altitude_color, :battery, 
+                                               :current_stage, :geofence_compliant, :geofence_compliant_color, :latitude, 
+                                               :longitude, :pitch, :pitch_color, :propulsion, :propulsion_color, :roll, :roll_color, :sensors_ok,
+                                               :speed, :stage_completed, :status, :yaw, :time_since_last_packet, :last_packet_time, :time, :stage_name, :mode)'''
+            cursor.execute(executionLine, requestedVehicle)
 
             # TEST: Accepting packets under certain conditions
             #if (json1['altitude'] == 1.0):

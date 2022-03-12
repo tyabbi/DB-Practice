@@ -8,12 +8,13 @@ class vehicleDataFormat():
             'altitude': 0.0,
             'altitude_color': 'None',
             'battery': 0.0,
-            'battery_color': 'None',
+            #'battery_color': 'None',
             'current_stage': 0,
             'geofence_compliant': False,
             'geofence_compliant_color': 'None',
             'latitude': 0.0,
             'longitude': 0.0,
+            'mode':'None',
             'pitch': 0.0,
             'pitch_color': 'None',
             'propulsion': False,
@@ -31,18 +32,20 @@ class vehicleDataFormat():
             'stage_name': 'None'
         }
 
+    # battery and connection(time_since_last_packet) already established frontend 
     # The Vehicle Data Format 
     def dataFormat():
         vehicleFormat = {
             'altitude': 0.0,
             'altitude_color': 'None',
             'battery': 0.0,
-            'battery_color': 'None',
+            #'battery_color': 'None',
             'current_stage': 0,
             'geofence_compliant': False,
             'geofence_compliant_color': 'None',
             'latitude': 0.0,
             'longitude': 0.0,
+            'mode':'None',
             'pitch': 0.0,
             'pitch_color': 'None',
             'propulsion': False,
@@ -78,17 +81,24 @@ class vehicleDataFormat():
     def setAltitude(self, altitude):
         if(type(altitude) == float):           
             self.update({"altitude": altitude})
+            if (altitude <= 80):
+               self.update({"altitude_color": 'Red'}) 
+            elif (altitude > 80 and altitude < 100):
+                self.update({"altitude_color": 'Yellow'})
+            elif (altitude >= 100):
+                self.update({"altitude_color": 'Green'})
+
     
     def getAltitude(self):
         return self.get("altitude")
 
-    #Add "Altitude color" (Subject to change)
-    def setAltitudeColor(self, altitudeColor):
-        if(type(altitudeColor) == str):           
-            self.update({"altitude_color": altitudeColor})
+    # #Add "Altitude color" (Subject to change)
+    # def setAltitudeColor(self, altitudeColor):
+    #     if(type(altitudeColor) == str):           
+    #         self.update({"altitude_color": altitudeColor})
     
-    def getAltitudeColor(self):
-        return self.get("altitude_color")
+    # def getAltitudeColor(self):
+    #     return self.get("altitude_color")
     
     def setBattery(self, battery):
         if(type(battery) == float):           
@@ -97,13 +107,13 @@ class vehicleDataFormat():
     def getBattery(self):
         return self.get("battery")
 
-    #Add "Battery color" (Subject to change)
-    def setBatteryColor(self, batteryColor):
-        if(type(batteryColor) == str):           
-            self.update({"battery_color": batteryColor})
+    # #Add "Battery color" (Subject to change)
+    # def setBatteryColor(self, batteryColor):
+    #     if(type(batteryColor) == str):           
+    #         self.update({"battery_color": batteryColor})
     
-    def getBatteryColor(self):
-        return self.get("battery_color")
+    # def getBatteryColor(self):
+    #     return self.get("battery_color")
 
     def setCurrentStage(self, stage):
         if(type(stage) == int):           
@@ -113,13 +123,18 @@ class vehicleDataFormat():
         return self.get("current_stage")
 
     def setGeofenceCompliant(self, isCompliant):
+        bool(isCompliant)
         if(type(isCompliant) == bool):           
-            self.update({"geoFence_compliant": isCompliant})
+            self.update({"geofence_compliant": isCompliant})
+            if(isCompliant is True):
+                self.update({'geofence_compliant_color': 'Green'})
+            elif(isCompliant is False):
+                self.update({'geofence_compliant_color': 'Yellow'})
     
     def getGeofenceCompliant(self):
         return self.get("geofence_compliant")
 
-    #Add "Geofence Compliant color"
+    #Add GET "Geofence Compliant color"
     
     def setLatitude(self, latitude):
         if(type(latitude) == float):           
@@ -138,31 +153,49 @@ class vehicleDataFormat():
     def setPitch(self, pitch):
         if(type(pitch) == float):           
             self.update({"pitch": pitch})
+            if (pitch < -15 or pitch > 15):
+                self.update({"pitch_color": "Red"})
+            elif ((pitch > -15 and pitch < -10) or (pitch > 10 and pitch < 15)):
+                self.update({"pitch_color": "Yellow"})
+            elif (pitch >= -10 and pitch <= 10):
+                self.update({"pitch_color": "Green"})
     
     def getPitch(self):
         return self.get("pitch")
 
-    #Add "Pitch color" 
+    #Add GET "Pitch color" 
 
     def setPropulsion(self, propulsion):
+        bool(propulsion)
         if(type(propulsion) == bool):           
             self.update({"propulsion": propulsion})
+            if(propulsion == True):
+                self.update({'propulsion_color': 'Green'})
+            elif(propulsion == False):
+                self.update({'propulsion_color': 'Yellow'})
     
     def getPropulsion(self):
         return self.get("propulsion")
 
-    #Add "Propulsion color" 
+    #Add GET "Propulsion color" 
 
     def setRoll(self, roll):
         if(type(roll) == float):           
             self.update({"roll": roll})
+            if (roll < -20 or roll > 20):
+                self.update({"roll_color": "Red"})
+            elif ((roll > -20 and roll < -15) or (roll > 15 and roll < 20)):
+                self.update({"roll_color": "Yellow"})
+            elif (roll >= -15 and roll <= 15):
+                self.update({"roll_color": "Green"})
     
     def getRoll(self):
         return self.get("roll")
 
-    #Add "Roll color" 
+    #Add GET "Roll color" 
 
     def setSensorsOk(self, sensorOk):
+        bool(sensorOk)
         if(type(sensorOk) == bool):           
             self.update({"sensors_ok": sensorOk})
     
@@ -177,6 +210,7 @@ class vehicleDataFormat():
         return self.get("speed")
 
     def setStageCompleted(self, stageComplete):
+        bool(stageComplete)
         if(type(stageComplete) == bool):           
             self.update({"stage_completed": stageComplete})
     
@@ -224,3 +258,10 @@ class vehicleDataFormat():
     
     def getStageName(self):
         return self.get("stage_name")
+
+    def setMode(self, mode):
+        if(type(mode) == str):           
+            self.update({"mode": mode})
+    
+    def getMode(self):
+        return self.get("mode")
