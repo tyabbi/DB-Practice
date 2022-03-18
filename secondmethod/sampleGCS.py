@@ -5,6 +5,9 @@ from xbee import ToERU, ToMAC, ToGCS, Orientation, LatLng, ManualControl, Geofen
 import threading
 import struct
 
+# Update Vehicle
+#from updateVehicle import * 
+gcsPacket = ""
 comm_port = "/dev/ttyUSB0" # can be swapped out for "/dev/ttyUSB0" for serial connection
 baud_rate = "9600"
 
@@ -60,7 +63,19 @@ def packet_received(packet):
     if packet_counters[dev_addr] is 0:
         with xbee.read_lock: # Acquire lock to read command data from GCS
             telemetry_data = ToGCS.deserialize(packet_buffers[dev_addr])
+            gcsPacket = telemetry_data
             print(packet.remote_device.get_node_id(), ": ", telemetry_data)
+            
+            # x = telemetry_data
+
+            # Call backend 
+            # Call the data format class 
+            # vehicleEntry = vehicleDataFormat.dataFormat()
+            # Some way to save the data from the "class"
+            # add time here
+            # Save the data into vehicleEntry
+            # Call updateVehicle 
+            # updateDatabase.newEntries(VehicleEntry)
 
 
 device.add_data_received_callback(packet_received)

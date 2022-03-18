@@ -1,8 +1,11 @@
 import sqlite3
 from sqlite3 import Error
-from updateVehicle import *
+#from updateVehicle import *
 import pandas as pd 
 from datetime import datetime
+import json
+import re
+from xbee import *
 
 # used for testing 
 
@@ -13,9 +16,9 @@ now = datetime.now()
 # oldTime = now.replace(hour=12, minute=0, second=0, microsecond=0).time()
 # # the latest stage
 # generalStage = 0
-
+# # hour=14, minute=5, second=0, microsecond=0.replace().time()
 # # New Time
-# newestPacketTime = now.replace(hour=14, minute=5, second=0, microsecond=0).time()
+# newestPacketTime = now.strftime("%H:%M:%S")
 
 # newData = {"vehicle_name": "testing",
 #             "altitude": 100.0,
@@ -45,14 +48,14 @@ now = datetime.now()
 #####################################################################################
 
 #Values to create connection to SQLite Database
-connection = None
-dbFile = "database.db"
+# connection = None
+# dbFile = "database.db"
 
 
-connection = sqlite3.connect(dbFile, isolation_level=None, detect_types=sqlite3.PARSE_COLNAMES)
+# connection = sqlite3.connect(dbFile, isolation_level=None, detect_types=sqlite3.PARSE_COLNAMES)
             
-# Enables SQLite commands
-cursor = connection.cursor()
+# # Enables SQLite commands
+# cursor = connection.cursor()
 
 # x = {
 #     'altitude': 87.25, 
@@ -127,3 +130,26 @@ cursor = connection.cursor()
 # # Save to database
 # #vehicleDatabase.saveData(vehicleEntry, vehicleName)
 
+#######################################################
+
+# t = "'altitude':50.0, 'speed':80, 'orientation': 2"
+# #print(t)
+# dictionary = dict(subString.split(":") for subString in t.split(","))
+# #print(dictionary)
+# x = "'altitude':50.0, 'speed':80, 'orientation':{Pitch:20*, Roll:120.0*, Yaw:270.0*}"
+# x = x.replace("'orientation'", "", -1)
+# x = x.replace("{", "", -1)
+# x = x.replace("*", "", -1)
+# x = x.removesuffix("}")
+# # x = x.remove
+
+# subString.split(":") for subString in t.split(","):
+# print(x.split(":"))
+# x = x.split(":") 
+
+# res = re.split(':|, ', x)
+
+# for i in res: 
+#     print(i)
+
+print(gcsPacket.orientation)

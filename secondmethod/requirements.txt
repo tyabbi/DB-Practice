@@ -6,3 +6,4 @@ datetime
 sqlite3
 pandas
 json
+digi-xbee

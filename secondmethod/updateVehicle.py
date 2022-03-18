@@ -3,6 +3,8 @@ from vehicleDataFormat import *
 from datetime import datetime
 from vehicleDatabase import *
 from generalStage import *
+from xbee import *
+from sampleGCS import *
 
 # updateVehicle.py handles saving new mission entry datapoints to the data format
 
@@ -10,6 +12,9 @@ from generalStage import *
 vehicleEntry = vehicleDataFormat.dataFormat()
 
 class updateVehicle():
+
+    def saveInfo(to_gcs):
+        print(to_gcs)
 
     # TODO: add the methods for all datapoints
     
@@ -113,38 +118,39 @@ class updateVehicle():
 # Manual
 
 # Adding new entries to database
-class updateDatabase():    
+class updateDatabase():
     vehicleDatabase()
     def newEntries():
+        # call updateVehicle class 
         updateVehicle()
         vehicleFormat = {
-                'vehicle_name': 'MEA',
-                'altitude': 100.0,
-                'altitude_color': 'None',
-                'battery': 23.0,
-                #'battery_color': 'None',
-                'current_stage': 1,
-                'geofence_compliant': False,
-                'geofence_compliant_color': 'None',
-                'latitude': 33.9344055,
-                'longitude': -117.6306099,
-                'mode':'Manual',
-                'pitch': 87.0,
-                'pitch_color': 'None',
-                'propulsion': True,
-                'propulsion_color': 'None',
-                'roll': 20.0,
-                'roll_color': 'None',
-                'sensors_ok': True,
-                'speed': 49.0,
-                'stage_completed': True,
-                'status': 5,
-                'yaw': 12.0,
-                'time_since_last_packet': 78,
-                'last_packet_time': 100,
-                # need to add this to comms 
-                'time': '2022-01-01 00:00:00',
-                'stage_name': 'None'
+            'vehicle_name': 'MAC',
+            'altitude': gcsPacket.altitude,
+            'altitude_color': 'None',
+            'battery': gcsPacket.battery,
+            #'battery_color': 'None',
+            'current_stage': gcsPacket.current_state,
+            'geofence_compliant': gcsPacket.geofence_compliant,
+            'geofence_compliant_color': 'None',
+            'latitude': gcsPacket.gps.lat,
+            'longitude': gcsPacket.gps.lng,
+            'mode':'Manual',
+            'pitch': gcsPacket.orientation.pitch,
+            'pitch_color': 'None',
+            'propulsion': gcsPacket.propulsion,
+            'propulsion_color': 'None',
+            'roll': gcsPacket.orientation.roll,
+            'roll_color': 'None',
+            'sensors_ok': gcsPacket.sensors_ok,
+            'speed': gcsPacket.speed,
+            'stage_completed': gcsPacket.state_complete,
+            'status': gcsPacket.status,
+            'yaw': gcsPacket.orientation.yaw,
+            'time_since_last_packet': 78,
+            'last_packet_time': 100,
+            # need to add this to comms 
+            'time': '2022-01-01 00:00:00',
+            'stage_name': 'None'
         }
 
         # Initialize the requested vehicle name
