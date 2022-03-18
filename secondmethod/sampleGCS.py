@@ -7,7 +7,7 @@ import struct
 
 # Update Vehicle
 #from updateVehicle import * 
-gcsPacket = ""
+#gcsPacket = ""
 comm_port = "/dev/ttyUSB0" # can be swapped out for "/dev/ttyUSB0" for serial connection
 baud_rate = "9600"
 
