@@ -432,7 +432,7 @@ gps = LatLng(2,2.0005)
 hiker = LatLng(1.5, 1.5)
 
 togcs = ToGCS(1.5,10,orientation,gps,.9,True,3,False,hiker,1,True,True)
-gcsPacket = togcs
+# gcsPacket = togcs
 
 geo_bounds = [Geofence(True, [LatLng(1,0),LatLng(0,1),LatLng(-1,0),LatLng(0,-1)])]
 geo_bounds.append(Geofence(False, [LatLng(1,1),LatLng(2,1),LatLng(2,-1),LatLng(1,-1)]))
