@@ -7,7 +7,7 @@ from enum import Enum
 from threading import Lock, Thread
 from math import ceil
 
-# gcsPacket = ""
+#gcsPacket = ""
 
 '''
 Python docs:
