@@ -53,7 +53,7 @@ class Packet:
 
     def transmit(self, device, recipient):
         packet_size = int.from_bytes(device.get_parameter('NP'), byteorder='big')-5
-        count = ceil(len(self.data)/float(packet_size))
+        count = floor(len(self.data)/float(packet_size))
         print("Sending ", count," packets of ", packet_size, " length")
         self.data = struct.pack('I', int(count)) + self.data
 
