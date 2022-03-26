@@ -74,11 +74,13 @@ class vehicleDatabase():
             #    cursor.execute('INSERT INTO testing(altitude, altitude_color, battery, battery_color) VALUES(:altitude, :altitude_color, :battery, :battery_color)', json1)
             
             # Export the database onto an CSV file
+
+            path = "databaseCSV/"
             databaseLine = "SELECT * FROM " + str(vehicleName)
             csvTitle = str(vehicleName) + "_database.csv"
             
             db_file = pd.read_sql_query(databaseLine, connection)
-            db_file.to_csv(csvTitle, index = False)
+            db_file.to_csv(path + csvTitle, index = False)
 
             connection.commit()
             #connection.close()

@@ -14,13 +14,10 @@ import struct
 from updateVehicle import *
 
 class updateDatabase():
-    #vehicleDatabase()
-    def newEntries(gcsPacket):
-        # call updateVehicle class 
-        #updateVehicle()
 
-        print(gcsPacket)
-        print("hi")
+    now = datetime.now()
+    def newEntries(gcsPacket):
+
         vehicleFormat = {
             'vehicle_name': 'MAC',
             'altitude': gcsPacket.altitude,
@@ -50,6 +47,7 @@ class updateDatabase():
             'time': '2022-01-01 00:00:00',
             'stage_name': 'None'
         }
+        
         print(vehicleFormat)
 
         # # Initialize the requested vehicle name
@@ -100,6 +98,42 @@ class updateDatabase():
         # requestedVehicle = updateVehicle.newMode(mode)
     
         vehicleDatabase.saveData(vehicleFormat, vehicleName)
+
+
+    def newEntries1 (gcsPacket, newestPacketTime):
+
+        newestPacketTime = str(newestPacketTime)
+
+        # Update the vehicle dictionary with given values 
+        requestedVehicle = updateVehicle.newAltitude(gcsPacket.altitude)
+        requestedVehicle = updateVehicle.newBattery(gcsPacket.battery)
+        requestedVehicle = updateVehicle.newCurrentStage(gcsPacket.current_state)
+        requestedVehicle = updateVehicle.newGeofenceCompilant(gcsPacket.geofence_compliant)
+        requestedVehicle = updateVehicle.newLatitude(gcsPacket.gps.lat)
+        requestedVehicle = updateVehicle.newLongitude(gcsPacket.gps.lng)
+        requestedVehicle = updateVehicle.newPitch(gcsPacket.orientation.pitch)
+        requestedVehicle = updateVehicle.newPropulsion(gcsPacket.propulsion)
+        requestedVehicle = updateVehicle.newRoll(gcsPacket.orientation.roll)
+        requestedVehicle = updateVehicle.newSensorsOk(gcsPacket.sensors_ok)
+        requestedVehicle = updateVehicle.newSpeed(gcsPacket.speed)
+        requestedVehicle = updateVehicle.newStageCompleted(gcsPacket.state_complete)
+        requestedVehicle = updateVehicle.newStatus(gcsPacket.status)
+        requestedVehicle = updateVehicle.newYaw(gcsPacket.orientation.yaw)
+        requestedVehicle = updateVehicle.newTimeSinceLastPacket(50)
+        requestedVehicle = updateVehicle.newLastPacketTime(98)
+        requestedVehicle = updateVehicle.newTime(newestPacketTime)
+        requestedVehicle = updateVehicle.newMode("Manual")
+
+        currentStage = requestedVehicle['current_stage']
+        stageName = updateStage.updateStageName(currentStage)
+        requestedVehicle = updateVehicle.newStageName(stageName)
+
+        print(requestedVehicle)
+
+        # vehicleDatabase.saveData(requestedVehicle, "MAC")
+
+
+
 comm_port = "COM7" # can be swapped out for "/dev/ttyUSB0" for serial connection
 baud_rate = "9600"
 telemetry_data = ""
@@ -156,7 +190,9 @@ def packet_received(packet):
     if packet_counters[dev_addr] is 0:
         with xbee.read_lock: # Acquire lock to read command data from GCS
             telemetry_data = ToGCS.deserialize(packet_buffers[dev_addr])
-            updateDatabase.newEntries(telemetry_data)
+            # updateDatabase.newEntries(telemetry_data)
+            newestPacketTime = now.strftime("%H:%M:%S")
+            updateDatabase.newEntries1(telemetry_data, newestPacketTime)
             #gcsPacket = telemetry_data
             # newEntries()
             # print(packet.remote_device.get_node_id(), ": ", telemetry_data)

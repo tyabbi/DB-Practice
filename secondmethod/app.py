@@ -13,6 +13,11 @@ from mission import *
 #     emergencyStop: "MAC"
 # }
 
+# error message from vehicle team  --> need to add critical warning 
+# error message 
+# error connection from packet time 
+# hiker position 
+
 app = Flask(__name__)
 cors = CORS(app)
 
