@@ -209,7 +209,8 @@ try:
 	# dataReceived.start_decode_thread()
 	while True:
 		cmd = input("Enter command (+,-,s,e,m,b): ")
-		updateDatabase.newEntries()
+		# updateDatabase.newEntries()
+        # updateDatabase.newEntries1(telemetry_data, newestPacketTime)
 		if cmd is '+':
 			state += 1
 			print("New state", state)
