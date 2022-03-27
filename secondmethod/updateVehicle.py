@@ -121,10 +121,6 @@ class updateVehicle():
 #     def newEntries():
 #         # call updateVehicle class 
 #         updateVehicle()
-<<<<<<< HEAD
-#         print(gcsPacket + "hi")
-=======
->>>>>>> aa92f1cc4b22b2adeec3caecab05db6ae812662a
 #         vehicleFormat = {
 #             'vehicle_name': 'MAC',
 #             'altitude': gcsPacket.altitude,
@@ -204,9 +200,5 @@ class updateVehicle():
     
 #         vehicleDatabase.saveData(requestedVehicle, vehicleName)
 
-<<<<<<< HEAD
-# # TESTING PURPOSE (add new entries to the database)
-=======
 # TESTING PURPOSE (add new entries to the database)
->>>>>>> aa92f1cc4b22b2adeec3caecab05db6ae812662a
 # updateDatabase.newEntries()
