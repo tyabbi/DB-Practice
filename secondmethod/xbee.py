@@ -2,17 +2,20 @@ from __future__ import annotations
 import time
 import typing
 import struct
+from unicodedata import decimal
 from digi.xbee.devices import DigiMeshDevice
 from enum import Enum
 from threading import Lock, Thread
 from math import ceil
 
+<<<<<<< HEAD
 #gcsPacket = ""
 
+=======
+>>>>>>> aa92f1cc4b22b2adeec3caecab05db6ae812662a
 '''
 Python docs:
 https://xbplib.readthedocs.io/en/latest/getting_started_with_xbee_python_library.html
-
 '''
 
 ## Setup for the device
@@ -55,7 +58,7 @@ class Packet:
 
     def transmit(self, device, recipient):
         packet_size = int.from_bytes(device.get_parameter('NP'), byteorder='big')-5
-        count = ceil(len(self.data)/float(packet_size))
+        count = floor(len(self.data)/float(packet_size))
         print("Sending ", count," packets of ", packet_size, " length")
         self.data = struct.pack('I', int(count)) + self.data
 
@@ -70,7 +73,7 @@ class Packet:
 
 # ToGCS used to transmit all data needed to the GCS from a given vehicle
 class ToGCS:
-    def __init__(self, altitude: float, speed: float, orientation: Orientation, gps: LatLng, battery: float, sensors_ok: bool, current_state: int, state_complete: bool,
+    def __init__(self, altitude: decimal, speed: decimal, orientation: Orientation, gps: LatLng, battery: int, sensors_ok: bool, current_state: int, state_complete: bool,
                 hiker_position: LatLng, status: int, propulsion: bool, geofence_compliant: bool):
         self.altitude = altitude
         self.speed = speed
@@ -88,7 +91,7 @@ class ToGCS:
         self.lock = Lock()
     
     def serialize(self):
-        header = struct.pack("8f?B?2fB2?", self.altitude, self.speed, self.orientation.pitch, self.orientation.roll, self.orientation.yaw, self.gps.lat,
+        header = struct.pack("8d?B?2dB2?", self.altitude, self.speed, self.orientation.pitch, self.orientation.roll, self.orientation.yaw, self.gps.lat,
                             self.gps.lng, self.battery, self.sensors_ok, self.current_state, self.state_complete, self.hiker_position.lat, self.hiker_position.lng,
                             self.status, self.propulsion, self.geofence_compliant)
         
@@ -96,7 +99,7 @@ class ToGCS:
 
     @classmethod
     def deserialize(cls, data: bytearray):
-        raw = [*struct.unpack("8f?B?2fB2?", data)]
+        raw = [*struct.unpack("8d?B?2dB2?", data)]
         raw.insert(2, Orientation(raw.pop(2), raw.pop(2), raw.pop(2)))
         raw.insert(3, LatLng(raw.pop(3), raw.pop(3)))
         raw.insert(8, LatLng(raw.pop(8), raw.pop(8)))
@@ -129,21 +132,21 @@ class ToMAC:
         self.lock = Lock()
 
     def serialize(self):
-        header = struct.pack("?B2f2I4f?", self.stop, self.perform_state, self.hiker_position.lat, self.hiker_position.lng, self.geofence_length, self.search_area_length,
+        header = struct.pack("?B2d2I4d?", self.stop, self.perform_state, self.hiker_position.lat, self.hiker_position.lng, self.geofence_length, self.search_area_length,
                             self.travel_to.lat, self.travel_to.lng, self.drop_location.lat, self.drop_location.lng, self.armed)
         body = bytearray()
         for geofence_obj in self.geofence:
             body += struct.pack("?B",geofence_obj.keep_in, geofence_obj.coord_length)
             for point in geofence_obj.coords:
-                body += struct.pack("2f", point.lat, point.lng)
+                body += struct.pack("2d", point.lat, point.lng)
 
         for search_area_obj in self.search_area:
             body += struct.pack("B", search_area_obj.coord_length)
             for point in search_area_obj.coords:
-                body += struct.pack("2f", point.lat, point.lng)
+                body += struct.pack("2d", point.lat, point.lng)
         
         if self.stop:
-            body += struct.pack("3f", *self.stop_coord)
+            body += struct.pack("3d", *self.stop_coord)
 
         header += body
 
@@ -153,7 +156,7 @@ class ToMAC:
     def deserialize(cls, data: bytearray):
         header = data[:37]
         body = data[37:]
-        raw = [*struct.unpack("?B2f2I4f?", header)]
+        raw = [*struct.unpack("?B2d2I4d?", header)]
         raw.insert(2, LatLng(raw.pop(2), raw.pop(2)))
         raw.insert(5, LatLng(raw.pop(5), raw.pop(5)))
         raw.insert(6, LatLng(raw.pop(6), raw.pop(6)))
@@ -167,7 +170,7 @@ class ToMAC:
             coords = []
             body = body[2:]
             for j in range(coord_length):
-                coords += [LatLng(*struct.unpack("2f", body[:8]))]
+                coords += [LatLng(*struct.unpack("2d", body[:8]))]
                 body = body[8:]
 
             geofence += [Geofence(keep, coords)]
@@ -178,13 +181,13 @@ class ToMAC:
             coords = []
             body = body[1:]
             for j in range(coord_length):
-                coords += [LatLng(*struct.unpack("2f", body[:8]))]
+                coords += [LatLng(*struct.unpack("2d", body[:8]))]
                 body = body[8:]
 
             search_area += [SearchArea(coords)]
 
         if stop:
-            raw[0] = struct.unpack("3f", body)
+            raw[0] = struct.unpack("3d", body)
         else:
             raw[0] = None
 
@@ -218,17 +221,17 @@ class ToERU:
         self.lock = Lock()
 
     def serialize(self):
-        header = struct.pack("?B2fI4f3?", self.stop, self.perform_state, self.hiker_position.lat, self.hiker_position.lng, 
+        header = struct.pack("?B2dI4d3?", self.stop, self.perform_state, self.hiker_position.lat, self.hiker_position.lng, 
                             self.geofence_length, self.ez_zone.lat, self.ez_zone.lng, self.travel_to.lat, self.travel_to.lng, self.execute_loading, 
                             self.manual_control, self.armed)
         body = bytearray()
         for geofence_obj in self.geofence:
             body += struct.pack("?B",geofence_obj.keep_in, geofence_obj.coord_length)
             for point in geofence_obj.coords:
-                body += struct.pack("2f", point.lat, point.lng)
+                body += struct.pack("2d", point.lat, point.lng)
         
         if self.manual_control:
-            body += struct.pack("5f", self.control_data.vertical, self.control_data.horizontal, self.control_data.arm, self.control_data.claw, self.control_data.speed)
+            body += struct.pack("5d", self.control_data.vertical, self.control_data.horizontal, self.control_data.arm, self.control_data.claw, self.control_data.speed)
 
         header += body
 
@@ -238,7 +241,7 @@ class ToERU:
     def deserialize(cls, data: bytearray):
         header = data[:35]
         body = data[35:]
-        raw = [*struct.unpack("?B2fI4f3?", header)]
+        raw = [*struct.unpack("?B2dI4d3?", header)]
         raw.insert(2, LatLng(raw.pop(2), raw.pop(2)))
         raw.insert(4, LatLng(raw.pop(4), raw.pop(4)))
         raw.insert(5, LatLng(raw.pop(5), raw.pop(5)))
@@ -252,13 +255,13 @@ class ToERU:
             coords = []
             body = body[2:]
             for j in range(coord_length):
-                coords += [LatLng(*struct.unpack("2f", body[:8]))]
+                coords += [LatLng(*struct.unpack("2d", body[:8]))]
                 body = body[8:]
             geofence += [Geofence(keep, coords)]
 
         control_data = None
         if manual_control:
-            control_data = ManualControl(*struct.unpack("5f",body))
+            control_data = ManualControl(*struct.unpack("5d",body))
 
         raw.insert(6, control_data)
         raw.insert(3, geofence)
@@ -288,17 +291,17 @@ class ToMEA:
         self.lock = Lock()
         
     def serialize(self):
-        header = struct.pack("?BI4f2?", self.stop, self.perform_state, self.geofence_length, 
+        header = struct.pack("?BI4d2?", self.stop, self.perform_state, self.geofence_length, 
                             self.ez_zone.lat, self.ez_zone.lng, self.travel_to.lat, self.travel_to.lng, 
                             self.execute_loading, self.armed)
         body = bytearray()
         for geofence_obj in self.geofence:
             body += struct.pack("?B",geofence_obj.keep_in, geofence_obj.coord_length)
             for point in geofence_obj.coords:
-                body += struct.pack("2f", point.lat, point.lng)
+                body += struct.pack("2d", point.lat, point.lng)
         
         if self.stop:
-            body += struct.pack("3f", *self.stop_coord)
+            body += struct.pack("3d", *self.stop_coord)
 
         header += body
 
@@ -308,7 +311,7 @@ class ToMEA:
     def deserialize(cls, data: bytearray):
         header = data[:26]
         body = data[26:]
-        raw = [*struct.unpack("?BI4f2?", header)]
+        raw = [*struct.unpack("?BI4d2?", header)]
         raw.insert(3, LatLng(raw.pop(3), raw.pop(3)))
         raw.insert(4, LatLng(raw.pop(4), raw.pop(4)))
         stop = raw[0]
@@ -320,13 +323,13 @@ class ToMEA:
             coords = []
             body = body[2:]
             for j in range(coord_length):
-                coords += [LatLng(*struct.unpack("2f", body[:8]))]
+                coords += [LatLng(*struct.unpack("2d", body[:8]))]
                 body = body[8:]
 
             geofence += [Geofence(keep, coords)]
 
         if stop:
-            raw[0] = struct.unpack("3f", body)
+            raw[0] = struct.unpack("3d", body)
         else:
             raw[0] = None
 
@@ -432,7 +435,6 @@ gps = LatLng(2,2.0005)
 hiker = LatLng(1.5, 1.5)
 
 togcs = ToGCS(1.5,10,orientation,gps,.9,True,3,False,hiker,1,True,True)
-#gcsPacket = togcs
 
 geo_bounds = [Geofence(True, [LatLng(1,0),LatLng(0,1),LatLng(-1,0),LatLng(0,-1)])]
 geo_bounds.append(Geofence(False, [LatLng(1,1),LatLng(2,1),LatLng(2,-1),LatLng(1,-1)]))

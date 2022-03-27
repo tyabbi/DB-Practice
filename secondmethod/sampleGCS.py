@@ -12,6 +12,7 @@ from xbee import TransmitThread, read_lock, ToERU, ToMAC, ToGCS, Orientation, La
 import threading
 import struct
 from updateVehicle import *
+<<<<<<< HEAD
 #import xbeereceiver
 #import queue
 #from updateDatabase import newEntries
@@ -24,6 +25,14 @@ class updateDatabase():
 
         print(gcsPacket)
         print("hi")
+=======
+
+class updateDatabase():
+
+    now = datetime.now()
+    def newEntries(gcsPacket):
+
+>>>>>>> aa92f1cc4b22b2adeec3caecab05db6ae812662a
         vehicleFormat = {
             'vehicle_name': 'MAC',
             'altitude': gcsPacket.altitude,
@@ -53,6 +62,10 @@ class updateDatabase():
             'time': '2022-01-01 00:00:00',
             'stage_name': 'None'
         }
+<<<<<<< HEAD
+=======
+        
+>>>>>>> aa92f1cc4b22b2adeec3caecab05db6ae812662a
         print(vehicleFormat)
 
         # # Initialize the requested vehicle name
@@ -103,6 +116,45 @@ class updateDatabase():
         # requestedVehicle = updateVehicle.newMode(mode)
     
         vehicleDatabase.saveData(vehicleFormat, vehicleName)
+<<<<<<< HEAD
+=======
+
+
+    def newEntries1 (gcsPacket, newestPacketTime):
+
+        newestPacketTime = str(newestPacketTime)
+
+        # Update the vehicle dictionary with given values 
+        requestedVehicle = updateVehicle.newAltitude(gcsPacket.altitude)
+        requestedVehicle = updateVehicle.newBattery(gcsPacket.battery)
+        requestedVehicle = updateVehicle.newCurrentStage(gcsPacket.current_state)
+        requestedVehicle = updateVehicle.newGeofenceCompilant(gcsPacket.geofence_compliant)
+        requestedVehicle = updateVehicle.newLatitude(gcsPacket.gps.lat)
+        requestedVehicle = updateVehicle.newLongitude(gcsPacket.gps.lng)
+        requestedVehicle = updateVehicle.newPitch(gcsPacket.orientation.pitch)
+        requestedVehicle = updateVehicle.newPropulsion(gcsPacket.propulsion)
+        requestedVehicle = updateVehicle.newRoll(gcsPacket.orientation.roll)
+        requestedVehicle = updateVehicle.newSensorsOk(gcsPacket.sensors_ok)
+        requestedVehicle = updateVehicle.newSpeed(gcsPacket.speed)
+        requestedVehicle = updateVehicle.newStageCompleted(gcsPacket.state_complete)
+        requestedVehicle = updateVehicle.newStatus(gcsPacket.status)
+        requestedVehicle = updateVehicle.newYaw(gcsPacket.orientation.yaw)
+        requestedVehicle = updateVehicle.newTimeSinceLastPacket(50)
+        requestedVehicle = updateVehicle.newLastPacketTime(98)
+        requestedVehicle = updateVehicle.newTime(newestPacketTime)
+        requestedVehicle = updateVehicle.newMode("Manual")
+
+        currentStage = requestedVehicle['current_stage']
+        stageName = updateStage.updateStageName(currentStage)
+        requestedVehicle = updateVehicle.newStageName(stageName)
+
+        print(requestedVehicle)
+
+        # vehicleDatabase.saveData(requestedVehicle, "MAC")
+
+
+
+>>>>>>> aa92f1cc4b22b2adeec3caecab05db6ae812662a
 comm_port = "COM7" # can be swapped out for "/dev/ttyUSB0" for serial connection
 baud_rate = "9600"
 telemetry_data = ""
@@ -159,7 +211,13 @@ def packet_received(packet):
     if packet_counters[dev_addr] is 0:
         with xbee.read_lock: # Acquire lock to read command data from GCS
             telemetry_data = ToGCS.deserialize(packet_buffers[dev_addr])
+<<<<<<< HEAD
             updateDatabase.newEntries(telemetry_data)
+=======
+            # updateDatabase.newEntries(telemetry_data)
+            newestPacketTime = now.strftime("%H:%M:%S")
+            updateDatabase.newEntries1(telemetry_data, newestPacketTime)
+>>>>>>> aa92f1cc4b22b2adeec3caecab05db6ae812662a
             #gcsPacket = telemetry_data
             # newEntries()
             # print(packet.remote_device.get_node_id(), ": ", telemetry_data)
@@ -176,7 +234,12 @@ try:
 	# dataReceived.start_decode_thread()
 	while True:
 		cmd = input("Enter command (+,-,s,e,m,b): ")
+<<<<<<< HEAD
 		updateDatabase.newEntries()
+=======
+		# updateDatabase.newEntries()
+        # updateDatabase.newEntries1(telemetry_data, newestPacketTime)
+>>>>>>> aa92f1cc4b22b2adeec3caecab05db6ae812662a
 		if cmd is '+':
 			state += 1
 			print("New state", state)

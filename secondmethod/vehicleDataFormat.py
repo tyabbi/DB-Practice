@@ -79,14 +79,14 @@ class vehicleDataFormat():
     # TODO: Finish setters and getters for color
     
     def setAltitude(self, altitude):
-        if(type(altitude) == float):           
-            self.update({"altitude": altitude})
-            if (altitude <= 80):
-               self.update({"altitude_color": 'Red'}) 
-            elif (altitude > 80 and altitude < 100):
-                self.update({"altitude_color": 'Yellow'})
-            elif (altitude >= 100):
-                self.update({"altitude_color": 'Green'})
+        # if(type(altitude) == decim):           
+        self.update({"altitude": altitude})
+        if (altitude <= 80):
+            self.update({"altitude_color": 'Red'}) 
+        elif (altitude > 80 and altitude < 100):
+            self.update({"altitude_color": 'Yellow'})
+        elif (altitude >= 100):
+            self.update({"altitude_color": 'Green'})
 
     
     def getAltitude(self):
@@ -203,8 +203,8 @@ class vehicleDataFormat():
         return self.get("sensors_ok")
     
     def setSpeed(self, speed):
-        if(type(speed) == float):           
-            self.update({"speed": speed})
+        # if(type(speed) == float):           
+        self.update({"speed": speed})
     
     def getSpeed(self):
         return self.get("speed")

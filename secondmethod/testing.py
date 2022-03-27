@@ -6,27 +6,29 @@ from datetime import datetime
 import json
 import re
 from xbee import *
-
+from vehicleDatabase import *
 # used for testing 
 
 now = datetime.now()
 # print(now)
 
 #####################################################################################
-# oldTime = now.replace(hour=12, minute=0, second=0, microsecond=0).time()
-# # the latest stage
-# generalStage = 0
-# # hour=14, minute=5, second=0, microsecond=0.replace().time()
-# # New Time
-# newestPacketTime = now.strftime("%H:%M:%S")
+oldTime = now.replace(hour=12, minute=0, second=0, microsecond=0).time()
+# the latest stage
+generalStage = 0
+# hour=14, minute=5, second=0, microsecond=0.replace().time()
+# New Time
+newestPacketTime = now.strftime("%H:%M:%S")
 
-# newData = {"vehicle_name": "testing",
-#             "altitude": 100.0,
-#             "altitude_color": "Red",
-#             "battery": 25.0,
-#             "time": str(newestPacketTime)}
+newData = {"vehicle_name": "testing",
+            "altitude": 100.0,
+            "altitude_color": "Red",
+            "battery": 25.0,
+            "time": str(newestPacketTime)}
 
+print(newData)
 
+requestedVehicle = vehicleDatabase.getData("MAC")
 # x = newData['time']
 # jsonTime = datetime.strptime(x, '%H:%M:%S')
 # newTime = jsonTime.time()
@@ -53,6 +55,13 @@ now = datetime.now()
 
 
 # connection = sqlite3.connect(dbFile, isolation_level=None, detect_types=sqlite3.PARSE_COLNAMES)
+# vehicleName = "testing"
+# #path = "..\databaseCSV\"
+# databaseLine = "SELECT * FROM " + str(vehicleName)
+# csvTitle = str(vehicleName) + "_database.csv"
+
+# db_file = pd.read_sql_query(databaseLine, connection)
+# db_file.to_csv( 'databaseCSV/' + csvTitle, index = False)
             
 # # Enables SQLite commands
 # cursor = connection.cursor()
@@ -152,4 +161,4 @@ now = datetime.now()
 # for i in res: 
 #     print(i)
 
-print(gcsPacket.orientation)
+# print(gcsPacket.orientation)
