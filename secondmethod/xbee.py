@@ -8,10 +8,10 @@ from enum import Enum
 from threading import Lock, Thread
 from math import ceil
 
-'''
-Python docs:
-https://xbplib.readthedocs.io/en/latest/getting_started_with_xbee_python_library.html
-'''
+# '''
+# Python docs:
+# https://xbplib.readthedocs.io/en/latest/getting_started_with_xbee_python_library.html
+# '''
 
 ## Setup for the device
 

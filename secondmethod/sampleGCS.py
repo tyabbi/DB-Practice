@@ -130,7 +130,7 @@ class updateDatabase():
 
         print(requestedVehicle)
 
-        # vehicleDatabase.saveData(requestedVehicle, "MAC")
+        vehicleDatabase.saveData(requestedVehicle, "MAC")
 
 
 
