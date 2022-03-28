@@ -8,11 +8,6 @@ from enum import Enum
 from threading import Lock, Thread
 from math import ceil
 
-<<<<<<< HEAD
-#gcsPacket = ""
-
-=======
->>>>>>> aa92f1cc4b22b2adeec3caecab05db6ae812662a
 '''
 Python docs:
 https://xbplib.readthedocs.io/en/latest/getting_started_with_xbee_python_library.html
