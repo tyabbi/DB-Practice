@@ -109,6 +109,8 @@ def postData():
         # Query the database for the requested vehicle & save into dictionary
         requestedVehicle = vehicleDatabase.getData(vehicleName)
 
+        print(requestedVehicle)
+
         # Send JSON Object back to frontend
         return jsonify(requestedVehicle)
 
