@@ -21,6 +21,8 @@ from mission import *
 app = Flask(__name__)
 cors = CORS(app)
 
+cmd = ""
+
 
 # hello this is shaz, this test
 
@@ -105,6 +107,9 @@ def postData():
 
         # Initialize the requested vehicle name
         vehicleName = requestData['vehicle_name']
+
+        if (vehicleName == "MAC"):
+            cmd = "m"
         
         # Query the database for the requested vehicle & save into dictionary
         requestedVehicle = vehicleDatabase.getData(vehicleName)

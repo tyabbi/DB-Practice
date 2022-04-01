@@ -12,6 +12,7 @@ from xbee import TransmitThread, read_lock, ToERU, ToMAC, ToGCS, Orientation, La
 import threading
 import struct
 from updateVehicle import *
+from app import cmd
 
 class updateDatabase():
 
@@ -208,7 +209,7 @@ try:
 	# dataReceived = XBeeReceiver(9, device)
 	# dataReceived.start_decode_thread()
 	while True:
-		cmd = input("Enter command (+,-,s,e,m,b): ")
+		# cmd = input("Enter command (+,-,s,e,m,b): ")
 		# updateDatabase.newEntries()
         # updateDatabase.newEntries1(telemetry_data, newestPacketTime)
 		if cmd is '+':
@@ -221,7 +222,7 @@ try:
 			stop = not stop
 		if cmd is 'e':
 			ToERU(stop, state, hiker_pos, geo_bounds, LatLng(5,5), LatLng(5.5,5.5), False, None, True).serialize().transmit(device, devices['eru'])
-		if cmd is 'm':
+		if cmd is "m":
 			ToMAC(None, state, hiker_pos, geo_bounds, [area], LatLng(5,5), LatLng(5.5,5.5), True).serialize().transmit(device, devices['mac'])       
 except KeyboardInterrupt:
 	print('Stopping')
