@@ -6,7 +6,7 @@ from unicodedata import decimal
 from digi.xbee.devices import DigiMeshDevice
 from enum import Enum
 from threading import Lock, Thread
-from math import ceil
+from math import floor
 
 # '''
 # Python docs:

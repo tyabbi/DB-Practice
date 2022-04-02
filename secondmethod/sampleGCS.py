@@ -12,95 +12,10 @@ from xbee import TransmitThread, read_lock, ToERU, ToMAC, ToGCS, Orientation, La
 import threading
 import struct
 from updateVehicle import *
-from app import cmd
+
+now = datetime.now()
 
 class updateDatabase():
-
-    now = datetime.now()
-    # def newEntries(gcsPacket):
-
-    #     vehicleFormat = {
-    #         'vehicle_name': 'MAC',
-    #         'altitude': gcsPacket.altitude,
-    #         'altitude_color': 'None',
-    #         'battery': gcsPacket.battery,
-    #         #'battery_color': 'None',
-    #         'current_stage': gcsPacket.current_state,
-    #         'geofence_compliant': gcsPacket.geofence_compliant,
-    #         'geofence_compliant_color': 'None',
-    #         'latitude': gcsPacket.gps.lat,
-    #         'longitude': gcsPacket.gps.lng,
-    #         'mode':'Manual',
-    #         'pitch': gcsPacket.orientation.pitch,
-    #         'pitch_color': 'None',
-    #         'propulsion': gcsPacket.propulsion,
-    #         'propulsion_color': 'None',
-    #         'roll': gcsPacket.orientation.roll,
-    #         'roll_color': 'None',
-    #         'sensors_ok': gcsPacket.sensors_ok,
-    #         'speed': gcsPacket.speed,
-    #         'stage_completed': gcsPacket.state_complete,
-    #         'status': gcsPacket.status,
-    #         'yaw': gcsPacket.orientation.yaw,
-    #         'time_since_last_packet': 78,
-    #         'last_packet_time': 100,
-    #         # need to add this to comms 
-    #         'time': '2022-01-01 00:00:00',
-    #         'stage_name': 'None'
-    #     }
-        
-    #     print(vehicleFormat)
-
-    #     # # Initialize the requested vehicle name
-    #     vehicleName = vehicleFormat['vehicle_name']
-
-    #     # Initialize the vehicle datapoints  
-    #     altitude = vehicleFormat['altitude']
-    #     battery = vehicleFormat['battery']
-    #     currentStage = vehicleFormat['current_stage']
-    #     geofenceCompilant = vehicleFormat['geofence_compliant']
-    #     latitude = vehicleFormat['latitude']
-    #     longitude = vehicleFormat['longitude']
-    #     pitch = vehicleFormat['pitch']
-    #     propulsion = vehicleFormat['propulsion']
-    #     roll = vehicleFormat['roll']
-    #     sensorsOk = vehicleFormat['sensors_ok']
-    #     speed = vehicleFormat['speed']
-    #     stageComplete = vehicleFormat['stage_completed']
-    #     status = vehicleFormat['status']
-    #     yaw = vehicleFormat['yaw']
-    #     timeSinceLastPacket = vehicleFormat['time_since_last_packet']
-    #     lastPacketTime = vehicleFormat['last_packet_time']
-    #     time = vehicleFormat['time']
-    #     mode = vehicleFormat['mode']
-
-    #     # Gets the stage name of the sent stage id 
-    #     stageName = updateStage.updateStageName(currentStage)
-        
-    #     # Update the vehicle dictionary with given values 
-    #     # requestedVehicle = updateVehicle.newAltitude(altitude)
-    #     # requestedVehicle = updateVehicle.newBattery(battery)
-    #     # requestedVehicle = updateVehicle.newCurrentStage(currentStage)
-    #     # requestedVehicle = updateVehicle.newGeofenceCompilant(geofenceCompilant)
-    #     # requestedVehicle = updateVehicle.newLatitude(latitude)
-    #     # requestedVehicle = updateVehicle.newLongitude(longitude)
-    #     # requestedVehicle = updateVehicle.newPitch(pitch)
-    #     # requestedVehicle = updateVehicle.newPropulsion(propulsion)
-    #     # requestedVehicle = updateVehicle.newRoll(roll)
-    #     # requestedVehicle = updateVehicle.newSensorsOk(sensorsOk)
-    #     # requestedVehicle = updateVehicle.newSpeed(speed)
-    #     # requestedVehicle = updateVehicle.newStageCompleted(stageComplete)
-    #     # requestedVehicle = updateVehicle.newStatus(status)
-    #     # requestedVehicle = updateVehicle.newYaw(yaw)
-    #     # requestedVehicle = updateVehicle.newTimeSinceLastPacket(timeSinceLastPacket)
-    #     # requestedVehicle = updateVehicle.newLastPacketTime(lastPacketTime)
-    #     # requestedVehicle = updateVehicle.newTime(time)
-    #     # requestedVehicle = updateVehicle.newStageName(stageName)
-    #     # requestedVehicle = updateVehicle.newMode(mode)
-    
-    #     vehicleDatabase.saveData(vehicleFormat, vehicleName)
-
-
     def newEntries1 (gcsPacket, newestPacketTime):
 
         newestPacketTime = str(newestPacketTime)
@@ -132,7 +47,6 @@ class updateDatabase():
         # print(requestedVehicle)
 
         vehicleDatabase.saveData(requestedVehicle, "MAC")
-
 
 
 comm_port = "COM7" # can be swapped out for "/dev/ttyUSB0" for serial connection
@@ -167,65 +81,73 @@ stop = False
 packet_buffers = {}
 packet_counters = {}
 
-def packet_received(packet):
-    print('Received packet from ', packet.remote_device.get_node_id())
-    global packet_buffers 
-    global packet_counters
-    global current_state
-    global hiker_position
+class getPacket():
+    
+    def packet_received(packet):
+        print('Received packet from ', packet.remote_device.get_node_id())
+        global packet_buffers 
+        global packet_counters
+        global current_state
+        global hiker_position
 
-    dev_addr = packet.remote_device.get_64bit_addr()
-    data = None
+        dev_addr = packet.remote_device.get_64bit_addr()
+        data = None
 
-    if dev_addr not in packet_counters or packet_counters[dev_addr] is 0:
-        packet_counters[dev_addr] = struct.unpack("I", packet.data[:4])[0] -1 
-        data = packet.data[4:]
-        print("expecting ", packet_counters[dev_addr]," packets")
-        packet_buffers[dev_addr] = b''
-    else:
-        packet_counters[dev_addr] -= 1
-        data = packet.data
+        if dev_addr not in packet_counters or packet_counters[dev_addr] is 0:
+            packet_counters[dev_addr] = struct.unpack("I", packet.data[:4])[0] -1 
+            data = packet.data[4:]
+            print("expecting ", packet_counters[dev_addr]," packets")
+            packet_buffers[dev_addr] = b''
+        else:
+            packet_counters[dev_addr] -= 1
+            data = packet.data
 
-    packet_buffers[dev_addr] += data
+        packet_buffers[dev_addr] += data
 
-    if packet_counters[dev_addr] is 0:
-        with xbee.read_lock: # Acquire lock to read command data from GCS
-            telemetry_data = ToGCS.deserialize(packet_buffers[dev_addr])
-            # updateDatabase.newEntries(telemetry_data)
-            newestPacketTime = now.strftime("%H:%M:%S")
-            updateDatabase.newEntries1(telemetry_data, newestPacketTime)
-            #gcsPacket = telemetry_data
-            # newEntries()
-            # print(packet.remote_device.get_node_id(), ": ", telemetry_data)
-
-
-device.add_data_received_callback(packet_received)
-#vehicleDatabase()
-#updateVehicle()
+        if packet_counters[dev_addr] is 0:
+            with xbee.read_lock: # Acquire lock to read command data from GCS
+                telemetry_data = ToGCS.deserialize(packet_buffers[dev_addr])
+                # updateDatabase.newEntries(telemetry_data)
+                newestPacketTime = now.strftime("%H:%M:%S")
+                updateDatabase.newEntries1(telemetry_data, newestPacketTime)
+                #gcsPacket = telemetry_data
+                # newEntries()
+                # print(packet.remote_device.get_node_id(), ": ", telemetry_data)
 
 
+    def start_receiving():
+        device.add_data_received_callback(getPacket.packet_received)
 
-try:
-	# dataReceived = XBeeReceiver(9, device)
-	# dataReceived.start_decode_thread()
-	while True:
-		# cmd = input("Enter command (+,-,s,e,m,b): ")
-		# updateDatabase.newEntries()
-        # updateDatabase.newEntries1(telemetry_data, newestPacketTime)
-		if cmd is '+':
-			state += 1
-			print("New state", state)
-		if cmd is '-':
-			state -= 1
-			print("New state", state)
-		if cmd is 's':
-			stop = not stop
-		if cmd is 'e':
-			ToERU(stop, state, hiker_pos, geo_bounds, LatLng(5,5), LatLng(5.5,5.5), False, None, True).serialize().transmit(device, devices['eru'])
-		if cmd is "m":
-			ToMAC(None, state, hiker_pos, geo_bounds, [area], LatLng(5,5), LatLng(5.5,5.5), True).serialize().transmit(device, devices['mac'])       
-except KeyboardInterrupt:
-	print('Stopping')
-finally:
-	device.del_data_received_callback(packet_received)
+    #def stop_receiving():
+    #    device.del_data_received_callback(getPacket.packet_received)
 
+    def getName(vehicleName):
+        state = 1
+        cmd = ""
+        sent = False
+        if (vehicleName == "MAC"):
+            cmd = "m"
+        if (vehicleName == "ERU"):
+            cmd = "e"
+        try:
+            # while True:
+            if cmd is "+":
+                state += 1
+                print("New state", state)
+            if cmd is "-":
+                state -= 1
+                print("New state", state)
+            if cmd is "s":
+                stop = not stop
+            if cmd is "e":
+                ToERU(stop, state, hiker_pos, geo_bounds, LatLng(5,5), LatLng(5.5,5.5), False, None, True).serialize().transmit(device, devices['eru'])
+            if cmd is "m":
+                #device.del_data_received_callback(getPacket.packet_received)
+                with xbee.read_lock:
+                    ToMAC(None, state, hiker_pos, geo_bounds, [area], LatLng(5,5), LatLng(5.5,5.5), True).serialize().transmit(device, devices['mac'])
+                #sent = True       
+        except KeyboardInterrupt:
+            #device.del_data_received_callback(getPacket.packet_received)
+            pass
+        finally:
+            pass

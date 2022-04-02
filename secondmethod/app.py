@@ -6,7 +6,9 @@ from vehicleDatabase import *
 from generalStage import *
 from datetime import datetime
 from mission import *
-
+import sampleGCS
+import xbee
+import os
 # https://www.digitalocean.com/community/tutorials/processing-incoming-request-data-in-flask
 
 # {
@@ -21,8 +23,7 @@ from mission import *
 app = Flask(__name__)
 cors = CORS(app)
 
-cmd = ""
-
+sampleGCS.getPacket.start_receiving()
 
 # hello this is shaz, this test
 
@@ -101,20 +102,22 @@ cmd = ""
 # Sends back the latest entry from requested vehicle
 @app.route("/postData", methods = ["POST"])
 def postData():
+    
     if(request.method == "POST"):
         # JSON Format from frontend
         requestData = request.get_json()
 
         # Initialize the requested vehicle name
         vehicleName = requestData['vehicle_name']
-
-        if (vehicleName == "MAC"):
-            cmd = "m"
-        
+        # sampleGCS.getPacket.start_receiving()
+        # if send is true
+        sampleGCS.getPacket.getName(vehicleName)
+        time.sleep(1)
         # Query the database for the requested vehicle & save into dictionary
+        #print("hi")
         requestedVehicle = vehicleDatabase.getData(vehicleName)
 
-        print(requestedVehicle)
+        # print(requestedVehicle)
 
         # Send JSON Object back to frontend
         return jsonify(requestedVehicle)
@@ -127,7 +130,7 @@ def updateGeneralStage():
         now = datetime.now()
         # Object from frontened
         requestData = request.get_json()
-
+        #sampleGCS.getPacket.getName(postData.vehicleName)
         #print(now)
         #print(requestData)
         updateStage.updateTime(requestData, now)
