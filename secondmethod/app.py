@@ -155,7 +155,8 @@ def getGeneralStage():
     dataFormat = {
         "id": dataValue['general_stage'],
         "vehicle": dataValue['vehicle'],
-        "name": dataValue['stage_name']
+        "name": dataValue['stage_name'],
+        "estop": dataValue['estop']
     }
 
     return dataFormat
