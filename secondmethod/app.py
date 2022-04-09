@@ -178,9 +178,6 @@ def createNewMission():
 @app.route("/getNewMission", methods = ['GET'])
 def getnewMission():
     if(request.method == "GET"):
-        requestData = request.get_json()
-        vehicleName = requestData['vehicle_name']
-        mode = requestData['mode']
         # Opens the saved mission entry from the JSON File and saves it into a variable 
 
         
@@ -198,7 +195,7 @@ def manualOverride():
         mode = requestData['mode']
 
         modeFormat = {
-            "vehicle": vehicleName,
+            "vehicle_name": vehicleName,
             "mode": mode
         }
 
@@ -206,8 +203,7 @@ def manualOverride():
         jsonFile = open("manualOverride.json", "w")
         json.dump(modeFormat, jsonFile)
         jsonFile.close()
-        dataValue = json.load(jsonFile)
-    return dataValue
+    return modeFormat
 
 # the host value allows traffic from anywhere to run this 
 app.run(host = "0.0.0.0")
