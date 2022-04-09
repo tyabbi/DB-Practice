@@ -29,7 +29,14 @@ class vehicleDataFormat():
             'time_since_last_packet': 0,
             'last_packet_time': 0,
             'time': "2022-01-01 00:00:00",
-            'stage_name': 'None'
+            'stage_name': 'None',
+            'hiker_position_lat': 0.0,
+            'hiker_position_lng': 0.0,
+            'err_msg': 'None'
+            # 'hiker_pos':{
+            #     'lat': 0.0,
+            #     'lng':0.0
+            # },
         }
 
     # battery and connection(time_since_last_packet) already established frontend 
@@ -60,7 +67,10 @@ class vehicleDataFormat():
             'time_since_last_packet': 0,
             'last_packet_time': 0,
             'time': '2022-01-01 00:00:00',
-            'stage_name': 'None'
+            'stage_name': 'None',
+            'hiker_position_lat': 0.0,
+            'hiker_position_lng': 0.0,
+            'err_msg': 'None'
         }
         return vehicleFormat
 
@@ -265,3 +275,24 @@ class vehicleDataFormat():
     
     def getMode(self):
         return self.get("mode")
+
+    def setHikerPositionLat(self, hikerLat):
+        if(type(hikerLat) == float):           
+            self.update({"hiker_position_lat": hikerLat})
+    
+    def getHikerPositionLat(self):
+        return self.get("latitude")
+    
+    def setHikerPositionLng(self, hikerLng):
+        if(type(hikerLng) == float):           
+            self.update({"hiker_position_lng": hikerLng})
+    
+    def getHikerPositionLng(self):
+        return self.get("hiker_position_lng")
+
+    def setError(self, error):
+        if(type(error) == str):           
+            self.update({"err_msg": error})
+    
+    def getError(self):
+        return self.get("err_msg")

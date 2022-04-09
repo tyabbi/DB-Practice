@@ -6,7 +6,10 @@ from vehicleDatabase import *
 from generalStage import *
 from datetime import datetime
 from mission import *
-import sampleGCS
+
+# Comment out for testing for frontend 
+# import sampleGCS
+
 import xbee
 import os
 # https://www.digitalocean.com/community/tutorials/processing-incoming-request-data-in-flask
@@ -23,7 +26,8 @@ import os
 app = Flask(__name__)
 cors = CORS(app)
 
-sampleGCS.getPacket.start_receiving()
+# Comment out for testing for frontend 
+# sampleGCS.getPacket.start_receiving()
 
 # hello this is shaz, this test
 
@@ -109,12 +113,14 @@ def postData():
 
         # Initialize the requested vehicle name
         vehicleName = requestData['vehicle_name']
-        # sampleGCS.getPacket.start_receiving()
+        
+        # Comment out for testing for frontend 
+        ########################################################
         # if send is true
-        sampleGCS.getPacket.getName(vehicleName)
-        time.sleep(1)
+        # sampleGCS.getPacket.getName(vehicleName)
+        # time.sleep(1)
+        ########################################################
         # Query the database for the requested vehicle & save into dictionary
-        #print("hi")
         requestedVehicle = vehicleDatabase.getData(vehicleName)
 
         # print(requestedVehicle)
@@ -177,13 +183,6 @@ def getnewMission():
         dataValue = json.load(jsonFile)
 
     return dataValue
-
-# {
-#     "vehicle_name": "testing",
-#     "altitude": 54.98, 
-#     "current_stage": 1,
-#     "time": "2022-01-21 07:15:00"
-# }
 
 # the host value allows traffic from anywhere to run this 
 app.run(host = "0.0.0.0")
