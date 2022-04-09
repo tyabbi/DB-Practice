@@ -39,7 +39,7 @@ class updateStage():
 
         # Declare variable for the stored time and convert from string to time data type
         jsonValue = dataValue['time']
-        jsonTime = datetime.strptime(jsonValue, '%Y-%m-%d %H:%M:%S')
+        jsonTime = datetime.strptime(jsonValue, '%Y-%m-%d %H:%M:%S.%f')
         oldTime = jsonTime.time()
 
         #newTime = datetime.strptime(newTime, '%Y-%m-%d %H:%M:%S')
