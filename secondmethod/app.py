@@ -178,11 +178,35 @@ def createNewMission():
 @app.route("/getNewMission", methods = ['GET'])
 def getnewMission():
     if(request.method == "GET"):
-
+        requestData = request.get_json()
+        vehicleName = requestData['vehicle_name']
+        mode = requestData['mode']
         # Opens the saved mission entry from the JSON File and saves it into a variable 
+
+        
         jsonFile = open("newMission.json")
         dataValue = json.load(jsonFile)
 
+    return dataValue
+
+@app.route("/manualOverride", methods = ['POST'])
+def manualOverride():
+    if(request.method == "POST"):
+
+        requestData = request.get_json()
+        vehicleName = requestData['vehicle_name']
+        mode = requestData['mode']
+
+        modeFormat = {
+            "vehicle": vehicleName,
+            "mode": mode
+        }
+
+        # Write the dictionary to the JSON File
+        jsonFile = open("manualOverride.json", "w")
+        json.dump(modeFormat, jsonFile)
+        jsonFile.close()
+        dataValue = json.load(jsonFile)
     return dataValue
 
 # the host value allows traffic from anywhere to run this 
