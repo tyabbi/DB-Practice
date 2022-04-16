@@ -32,6 +32,7 @@ class updateStage():
         vehicleName = newEntry['vehicle_name']
         newStage = newEntry['current_stage']
         stageName = newEntry['stage_name']
+        estop = newEntry['estop']
 
         # Open the updateStage.json and load it 
         jsonFile = open("updateStage.json")
@@ -39,20 +40,20 @@ class updateStage():
 
         # Declare variable for the stored time and convert from string to time data type
         jsonValue = dataValue['time']
-        jsonTime = datetime.strptime(jsonValue, '%Y-%m-%d %H:%M:%S')
-        oldTime = jsonTime.time()
+        oldTime = datetime.strptime(jsonValue, '%Y-%m-%d %H:%M:%S.%f')
 
         #newTime = datetime.strptime(newTime, '%Y-%m-%d %H:%M:%S')
 
         # Check if newTime is greater and update the JSON File
-        if (newTime.time() > oldTime):
+        if (newTime > oldTime):
 
             # Dictionary format for the new time and stage
             stageFormat = {
             "time": str(newTime),
             "vehicle": vehicleName,
             "general_stage": newStage,
-            "stage_name": stageName
+            "stage_name": stageName,
+            "estop": estop
             }
 
             # print(stageFormat)
@@ -62,13 +63,8 @@ class updateStage():
             json.dump(stageFormat, jsonFile)
             jsonFile.close()
 
-    # Checks the stage id number and find the corresponding stage name
-    def updateStageName(currentStage): 
-        stageNames = ["Ready to Start", "Takeoff to Minimum Altitude", "Find the Hiker", "ERU Drop",
-                    "ERU Landing Sequence", "Drive to Hiker", "Load the Hiker", "Go to EZ", "Transferring Hiker",
-                    "Return to Home/Travel to Position"]
+        
 
-        return stageNames[currentStage]
 
 
 # # For testing 

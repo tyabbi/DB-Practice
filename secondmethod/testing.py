@@ -49,19 +49,94 @@ requestedVehicle = vehicleDatabase.getData("MAC")
 
 #####################################################################################
 
-#Values to create connection to SQLite Database
-# connection = None
-# dbFile = "database.db"
+# Values to create connection to SQLite Database
+connection = None
+dbFile = "database.db"
 
+connection = sqlite3.connect(dbFile, isolation_level=None, detect_types=sqlite3.PARSE_COLNAMES)
+vehicleName = "MAC"
+#path = "..\databaseCSV\"
+# cursor = connection.cursor()
+# vehicleTable = """ CREATE TABLE IF NOT EXISTS """ + str(vehicleName) + """(altitude FLOAT, 
+#                                                                 altitude_color TEXT, 
+#                                                                 battery FLOAT, 
+#                                                                 current_stage INTEGER,
+#                                                                 geofence_compliant BOOLEAN, 
+#                                                                 geofence_compliant_color TEXT, 
+#                                                                 latitude FLOAT, 
+#                                                                 longitude FLOAT, 
+#                                                                 pitch FLOAT, 
+#                                                                 pitch_color TEXT, 
+#                                                                 propulsion BOOLEAN,
+#                                                                 propulsion_color TEXT,
+#                                                                 roll FLOAT, 
+#                                                                 roll_color TEXT, 
+#                                                                 sensors_ok BOOLEAN, 
+#                                                                 speed FLOAT, 
+#                                                                 stage_completed BOOLEAN, 
+#                                                                 status INTEGER, 
+#                                                                 yaw FLOAT, 
+#                                                                 time_since_last_packet INTEGER, 
+#                                                                 last_packet_time INTEGER, 
+#                                                                 time STRING,
+#                                                                 stage_name STRING,
+#                                                                 mode STRING,
+#                                                                 hiker_position_lat FLOAT,
+#                                                                 hiker_position_lng FLOAT, 
+#                                                                 err_msg STRING
+#                                                                 )"""
 
-# connection = sqlite3.connect(dbFile, isolation_level=None, detect_types=sqlite3.PARSE_COLNAMES)
-# vehicleName = "testing"
-# #path = "..\databaseCSV\"
-# databaseLine = "SELECT * FROM " + str(vehicleName)
-# csvTitle = str(vehicleName) + "_database.csv"
+#             # Creates the table
+# cursor.execute(vehicleTable)
 
-# db_file = pd.read_sql_query(databaseLine, connection)
-# db_file.to_csv( 'databaseCSV/' + csvTitle, index = False)
+# vehicleFormat = {
+#             'altitude': 0.0,
+#             'altitude_color': 'None',
+#             'battery': 0.0,
+#             'battery_color': 'None',
+#             'current_stage': 0,
+#             'geofence_compliant': False,
+#             'geofence_compliant_color': 'None',
+#             'latitude': 0.0,
+#             'longitude': 0.0,
+#             'mode':'None',
+#             'pitch': 0.0,
+#             'pitch_color': 'None',
+#             'propulsion': False,
+#             'propulsion_color': 'None',
+#             'roll': 0.0,
+#             'roll_color': 'None',
+#             'sensors_ok': False,
+#             'speed': 0.0,
+#             'stage_completed': False,
+#             'status': 0,
+#             'yaw': 0.0,
+#             'time_since_last_packet': 0,
+#             'last_packet_time': 0,
+#             'time': '2022-01-01 00:00:00',
+#             'stage_name': 'None',
+#             'mode': 'Manual',
+#             'hiker_position_lat': 2,
+#             'hiker_position_lng': 7,
+#             'err_msg': 'None'
+# }
+
+# executionLine = '''INSERT INTO ''' + str(vehicleName) + '''(altitude, altitude_color, battery, current_stage, geofence_compliant,
+#                                                geofence_compliant_color, latitude, longitude, pitch, pitch_color, propulsion, 
+#                                                propulsion_color, roll, roll_color, sensors_ok, speed, stage_completed, status, yaw,
+#                                                time_since_last_packet, last_packet_time, time, stage_name, mode, hiker_position_lat, hiker_position_lng,
+#                                                err_msg) VALUES(:altitude, :altitude_color, :battery, 
+#                                                :current_stage, :geofence_compliant, :geofence_compliant_color, :latitude, 
+#                                                :longitude, :pitch, :pitch_color, :propulsion, :propulsion_color, :roll, :roll_color, :sensors_ok,
+#                                                :speed, :stage_completed, :status, :yaw, :time_since_last_packet, :last_packet_time, :time, :stage_name, :mode,
+#                                                :hiker_position_lat, :hiker_position_lng, :err_msg)'''
+# cursor.execute(executionLine, vehicleFormat)
+
+databaseLine = "SELECT * FROM " + str(vehicleName)
+csvTitle = str(vehicleName) + "_database.csv"
+db_file = pd.read_sql_query(databaseLine, connection)
+db_file.to_csv( 'databaseCSV/' + csvTitle, index = False)
+
             
 # # Enables SQLite commands
 # cursor = connection.cursor()

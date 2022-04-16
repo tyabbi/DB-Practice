@@ -7,3 +7,4 @@ sqlite3
 pandas
 json
 digi-xbee
+tinydb==4.6.1

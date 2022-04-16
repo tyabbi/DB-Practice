@@ -51,7 +51,11 @@ class vehicleDatabase():
                                                                 last_packet_time INTEGER, 
                                                                 time STRING,
                                                                 stage_name STRING,
-                                                                mode STRING)"""
+                                                                mode STRING,
+                                                                hiker_position_lat FLOAT,
+                                                                hiker_position_lng FLOAT, 
+                                                                err_msg STRING
+                                                                )"""
 
             # Creates the table
             cursor.execute(vehicleTable)
@@ -63,10 +67,12 @@ class vehicleDatabase():
             executionLine = '''INSERT INTO ''' + str(vehicleName) + '''(altitude, altitude_color, battery, current_stage, geofence_compliant,
                                                geofence_compliant_color, latitude, longitude, pitch, pitch_color, propulsion, 
                                                propulsion_color, roll, roll_color, sensors_ok, speed, stage_completed, status, yaw,
-                                               time_since_last_packet, last_packet_time, time, stage_name, mode) VALUES(:altitude, :altitude_color, :battery, 
+                                               time_since_last_packet, last_packet_time, time, stage_name, mode, hiker_position_lat, hiker_position_lng,
+                                               err_msg) VALUES(:altitude, :altitude_color, :battery, 
                                                :current_stage, :geofence_compliant, :geofence_compliant_color, :latitude, 
                                                :longitude, :pitch, :pitch_color, :propulsion, :propulsion_color, :roll, :roll_color, :sensors_ok,
-                                               :speed, :stage_completed, :status, :yaw, :time_since_last_packet, :last_packet_time, :time, :stage_name, :mode)'''
+                                               :speed, :stage_completed, :status, :yaw, :time_since_last_packet, :last_packet_time, :time, :stage_name, :mode,
+                                               :hiker_position_lat, :hiker_position_lng, :err_msg)'''
             cursor.execute(executionLine, requestedVehicle)
 
             # TEST: Accepting packets under certain conditions

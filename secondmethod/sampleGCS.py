@@ -1,4 +1,5 @@
 import json
+from tkinter import EW
 from vehicleDataFormat import *
 from datetime import datetime
 from vehicleDatabase import *
@@ -16,7 +17,7 @@ from updateVehicle import *
 now = datetime.now()
 
 class updateDatabase():
-    def newEntries1 (gcsPacket, newestPacketTime):
+    def newEntries (gcsPacket, newestPacketTime):
 
         newestPacketTime = str(newestPacketTime)
 
@@ -39,13 +40,15 @@ class updateDatabase():
         requestedVehicle = updateVehicle.newLastPacketTime(98)
         requestedVehicle = updateVehicle.newTime(newestPacketTime)
         requestedVehicle = updateVehicle.newMode("Manual")
+        requestedVehicle = updateVehicle.newHikerPositionLat(gcsPacket.hiker_position.lat)
+        requestedVehicle = updateVehicle.newHikerPositionLng(gcsPacket.hiker_position.lng)
+        requestedVehicle = updateVehicle.newErrMsg("Overheat")
 
         currentStage = requestedVehicle['current_stage']
         stageName = updateStage.updateStageName(currentStage)
         requestedVehicle = updateVehicle.newStageName(stageName)
 
         # print(requestedVehicle)
-
         vehicleDatabase.saveData(requestedVehicle, "MAC")
 
 
@@ -107,11 +110,9 @@ class getPacket():
         if packet_counters[dev_addr] is 0:
             with xbee.read_lock: # Acquire lock to read command data from GCS
                 telemetry_data = ToGCS.deserialize(packet_buffers[dev_addr])
-                # updateDatabase.newEntries(telemetry_data)
                 newestPacketTime = now.strftime("%H:%M:%S")
-                updateDatabase.newEntries1(telemetry_data, newestPacketTime)
+                updateDatabase.newEntries(telemetry_data, newestPacketTime)
                 #gcsPacket = telemetry_data
-                # newEntries()
                 # print(packet.remote_device.get_node_id(), ": ", telemetry_data)
 
 
