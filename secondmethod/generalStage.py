@@ -40,13 +40,12 @@ class updateStage():
 
         # Declare variable for the stored time and convert from string to time data type
         jsonValue = dataValue['time']
-        jsonTime = datetime.strptime(jsonValue, '%Y-%m-%d %H:%M:%S.%f')
-        oldTime = jsonTime.time()
+        oldTime = datetime.strptime(jsonValue, '%Y-%m-%d %H:%M:%S.%f')
 
         #newTime = datetime.strptime(newTime, '%Y-%m-%d %H:%M:%S')
 
         # Check if newTime is greater and update the JSON File
-        if (newTime.time() > oldTime):
+        if (newTime > oldTime):
 
             # Dictionary format for the new time and stage
             stageFormat = {
@@ -63,6 +62,8 @@ class updateStage():
             jsonFile = open("updateStage.json", "w")
             json.dump(stageFormat, jsonFile)
             jsonFile.close()
+
+        
 
 
 
