@@ -124,6 +124,7 @@ class getPacket():
 
     def getName(vehicleName):
         state = 1
+        stop = 1
         cmd = ""
         sent = False
         if (vehicleName == "MAC"):
@@ -144,8 +145,9 @@ class getPacket():
                 ToERU(stop, state, hiker_pos, geo_bounds, LatLng(5,5), LatLng(5.5,5.5), False, None, True).serialize().transmit(device, devices['eru'])
             if cmd is "m":
                 #device.del_data_received_callback(getPacket.packet_received)
-                with xbee.read_lock:
+                with xbee.read_lock.acquire():
                     ToMAC(None, state, hiker_pos, geo_bounds, [area], LatLng(5,5), LatLng(5.5,5.5), True).serialize().transmit(device, devices['mac'])
+                    xbee.read_lock.release()
                 #sent = True       
         except KeyboardInterrupt:
             #device.del_data_received_callback(getPacket.packet_received)
